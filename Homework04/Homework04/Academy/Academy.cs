@@ -12,12 +12,14 @@ namespace Homework04
         public List<Course> Courses;
         public List<Student> Students;
         public List<Lecturer> Lecturers;
+        public List<Hometask> Hometasks;
 
         public Academy()
         {
             Courses = new List<Course>();
             Students = new List<Student>();
             Lecturers = new List<Lecturer>();
+            Hometasks = new List<Hometask>();
         }
     }
 }

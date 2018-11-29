@@ -21,5 +21,14 @@ namespace Homework04
         {
             HomeworkMarks = new List<HometaskMark>();
         }
+
+        public Hometask(int id, string name, string description, DateTime date, int serialNumber) : this()
+        {
+            Id = id;
+            Name = name;
+            Description = description;
+            Date = date;
+            SerialNumber = serialNumber;
+        }
     }
 }

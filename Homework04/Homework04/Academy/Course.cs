@@ -26,7 +26,7 @@ namespace Homework04
             Lecturers = new List<Lecturer>();
         }
 
-        public Course(int id, string name, DateTime start, DateTime end, int points) : base()
+        public Course(int id, string name, DateTime start, DateTime end, int points) : this()
         {
             Id = id;
             Name = name;

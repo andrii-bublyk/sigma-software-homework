@@ -22,5 +22,14 @@ namespace Homework04
             Courses = new List<Course>();
             Marks = new List<HometaskMark>();
         }
+
+        public Student(int id, string name, string phone, string email, string github) : this()
+        {
+            Id = id;
+            Name = name;
+            Phone = phone;
+            Email = email;
+            GithubLink = github;
+        }
     }
 }

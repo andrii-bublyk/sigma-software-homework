@@ -18,5 +18,12 @@ namespace Homework04
         {
             Courses = new List<Course>();
         }
+
+        public Lecturer(int id, string name, DateTime birthday) : this()
+        {
+            Id = id;
+            Name = name;
+            Birthday = birthday;
+        }
     }
 }
