@@ -4,24 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Homework4
+namespace Homework04
 {
-    class Student
+    class Lecturer
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Phone { get; set; }
-        public string Email { get; set; }
-        public string GithubLink { get; set; }
+        public DateTime Birthday { get; set; }
 
         public List<Course> Courses;
-        public List<HomeworkMark> Marks;
 
-        public Student()
+        public Lecturer()
         {
             Courses = new List<Course>();
-            Marks = new List<HomeworkMark>();
         }
-
     }
 }

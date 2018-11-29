@@ -42,14 +42,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Academy.cs" />
-    <Compile Include="Course.cs" />
-    <Compile Include="Hometask.cs" />
-    <Compile Include="HomeworkMark.cs" />
-    <Compile Include="Lecturer.cs" />
+    <Compile Include="AcademyXmlWorker\AcademyXmlReader.cs" />
+    <Compile Include="AcademyXmlWorker\AcademyXmlWriter.cs" />
+    <Compile Include="Academy\Academy.cs" />
+    <Compile Include="Academy\Course.cs" />
+    <Compile Include="Academy\Hometask.cs" />
+    <Compile Include="Academy\HometaskMark.cs" />
+    <Compile Include="Academy\Lecturer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Student.cs" />
+    <Compile Include="Academy\Student.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

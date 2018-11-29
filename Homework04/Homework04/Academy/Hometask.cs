@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Homework4
+namespace Homework04
 {
     class Hometask
     {
@@ -15,11 +15,11 @@ namespace Homework4
         public int SerialNumber { get; set; }
 
         public Course Course { get; set; }
-        public List<HomeworkMark> HomeworkMarks;
+        public List<HometaskMark> HomeworkMarks;
 
         public Hometask()
         {
-            HomeworkMarks = new List<HomeworkMark>();
+            HomeworkMarks = new List<HometaskMark>();
         }
     }
 }

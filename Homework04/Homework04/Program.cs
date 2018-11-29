@@ -5,8 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Homework04.AcademyXmlWorker;
 
-namespace Homework4
+namespace Homework04
 {
     public static class ExtentionClass
     {
@@ -30,14 +31,22 @@ namespace Homework4
     {
         static void Main(string[] args)
         {
-            Academy academy = new Academy();
-
-            //Course course1 = new Course(1, "course01", new DateTime(2018, 10, 5), new DateTime(2018, 12, 22), 80);
+            //Academy academy = new Academy();
+            //Course course1 = new Course(1,
+            //                            "course01",
+            //                            new DateTime(2018, 10, 5),
+            //                            new DateTime(2018, 12, 22),
+            //                            80);
             //academy.Courses.Add(course1);
-            //XDocument exportResult = academy.ExportToXml();
-            //exportResult.Save("academy.xml");
 
-            academy.ImportFromXml("academy.xml");
+            //AcademyXmlWriter academyXmlWriter = new AcademyXmlWriter();
+            //academyXmlWriter.GenerateXmlPresentation(academy, "academy01.xml");
+
+
+            AcademyXmlReader academyXmlReader = new AcademyXmlReader();
+            Academy academy2 = academyXmlReader.GetAcademyObjectModelFromXml("academy01.xml");
+            
+            //academy.ImportFromXml("academy.xml");
 
             Console.ReadKey();
         }
