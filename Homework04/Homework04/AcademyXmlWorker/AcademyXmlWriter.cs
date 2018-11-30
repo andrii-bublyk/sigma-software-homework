@@ -23,7 +23,7 @@ namespace Homework04.AcademyXmlWorker
                 coursesList.Add(GetCourseXmlPresentation(course));
             }
 
-            XElement lecturersList = new XElement("lectors-list");
+            XElement lecturersList = new XElement("lecturers-list");
             foreach (var lecturer in academy.Lecturers)
             {
                 lecturersList.Add(GetLecturerXmlPresentation(lecturer));
@@ -58,7 +58,7 @@ namespace Homework04.AcademyXmlWorker
                                                             new XAttribute("passing-points", cource.PassingPoints)
                                                  );
 
-            XElement studentsList = new XElement("students-list");
+            XElement studentsList = new XElement("students");
             foreach (var student in cource.Students)
             {
                 studentsList.Add(new XElement("student", new XAttribute("id", student.Id),
@@ -66,7 +66,7 @@ namespace Homework04.AcademyXmlWorker
                                              );
             }
 
-            XElement hometasksList = new XElement("hometasks-list");
+            XElement hometasksList = new XElement("hometasks");
             foreach (var hometask in cource.Hometasks)
             {
                 hometasksList.Add(new XElement("student", new XAttribute("id", hometask.Id),
@@ -74,7 +74,7 @@ namespace Homework04.AcademyXmlWorker
                                              );
             }
 
-            XElement lecturersList = new XElement("lecturers-list");
+            XElement lecturersList = new XElement("lecturers");
             foreach (var lecturer in cource.Lecturers)
             {
                 lecturersList.Add(new XElement("lecturer", new XAttribute("id", lecturer.Id),
@@ -96,7 +96,7 @@ namespace Homework04.AcademyXmlWorker
                                                               new XAttribute("birthday", lecturer.Birthday.GetDate())
                                                  );
 
-            XElement coursesList = new XElement("courses-list");
+            XElement coursesList = new XElement("courses");
             foreach (var course in lecturer.Courses)
             {
                 coursesList.Add(new XElement("course", new XAttribute("id", course.Id),
@@ -117,7 +117,7 @@ namespace Homework04.AcademyXmlWorker
                                                              new XAttribute("github-link", student.GithubLink)
                                                  );
 
-            XElement coursesList = new XElement("courses-list");
+            XElement coursesList = new XElement("courses");
             foreach (var course in student.Courses)
             {
                 coursesList.Add(new XElement("course", new XAttribute("id", course.Id),
@@ -174,7 +174,7 @@ namespace Homework04.AcademyXmlWorker
                                               new XAttribute("name", hometask.Course.Name))
                                    );
 
-            XElement hometaskMarksList = new XElement("hometask-marks-list");
+            XElement hometaskMarksList = new XElement("hometask-marks");
             foreach (var mark in hometask.HomeworkMarks)
             {
                 hometaskMarksList.Add(new XElement("mark", new XAttribute("id", mark.Id),
