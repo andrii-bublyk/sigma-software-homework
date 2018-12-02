@@ -18,7 +18,6 @@ namespace Homework04.AcademyXmlWorker
             XDocument document = XDocument.Load(fileName);
             XElement academyNode = document.Elements().First();
 
-            //XElement coursesNode = academyNode.Elements().First();
             XElement coursesNode = academyNode.Descendants("courses-list").FirstOrDefault();
             List<Course> courses = GetCoursesFromNode(coursesNode);
 
@@ -34,13 +33,13 @@ namespace Homework04.AcademyXmlWorker
             XElement hometasksMarksNode = academyNode.Descendants("hometasks-marks-list").FirstOrDefault();
             List<HometaskMark> hometasksMarks = GetHometasksMarksFromNode(hometasksMarksNode);
 
-            List<KeyValuePair<int, int>> bindingCoursesLecturersDictionary = GetCoursesLecturersBindingDictionary(coursesNode);
-            List<KeyValuePair<int, int>> bindingCoursesStudentsDictionary = GetCoursesStudentsBindingDictionary(coursesNode);
-            List<KeyValuePair<int, int>> bindingCoursesHometasksDictionary = GetCoursesHometasksBindingDictionary(coursesNode);
+            List<KeyValuePair<int, int>> bindingCoursesLecturersDictionary = GetBindingDictionaryById(coursesNode, "lecturers");
+            List<KeyValuePair<int, int>> bindingCoursesStudentsDictionary = GetBindingDictionaryById(coursesNode, "students");
+            List<KeyValuePair<int, int>> bindingCoursesHometasksDictionary = GetBindingDictionaryById(coursesNode, "hometasks");
 
-            List<KeyValuePair<int, int>> bindingStudentsMarksDictionary = GetStudentsMarksBindingDictionary(studentsNode);
-            List<KeyValuePair<int, int>> bindingMarksHometasksDictionary = GetMarksHometasksBindingDictionary(hometasksMarksNode);
-            List<KeyValuePair<int, int>> bindingMarksCoursesDictionary = GetMarksCouresBindingDictionary(hometasksMarksNode);
+            List<KeyValuePair<int, int>> bindingStudentsMarksDictionary = GetBindingDictionaryById(studentsNode, "hometask-marks");
+            List<KeyValuePair<int, int>> bindingMarksHometasksDictionary = GetBindingDictionaryById(hometasksMarksNode, "hometask");
+            List<KeyValuePair<int, int>> bindingMarksCoursesDictionary = GetBindingDictionaryById(hometasksMarksNode, "course");
             
             // courses and lecturers binding
             foreach (var courseLecturer in bindingCoursesLecturersDictionary)
@@ -200,112 +199,22 @@ namespace Homework04.AcademyXmlWorker
             return hometasksMarks;
         }
 
-        private List<KeyValuePair<int, int>> GetCoursesLecturersBindingDictionary(XElement coursesNode)
+        private List<KeyValuePair<int, int>> GetBindingDictionaryById(XElement node, string secondElementName)
         {
-            List<KeyValuePair<int, int>> bindingCoursesLecturersDictionary = new List<KeyValuePair<int, int>>();
+            List<KeyValuePair<int, int>> bindingDictionary = new List<KeyValuePair<int, int>>();
 
-            foreach (var course in coursesNode.Elements())
+            foreach (var element in node.Elements())
             {
-                int courseId = Convert.ToInt32(course.Attribute("id").Value);
-                XElement lecturers = course.Descendants("lecturers").FirstOrDefault();
-                foreach (var lecturer in lecturers.Elements())
+                int firstId = Convert.ToInt32(element.Attribute("id").Value);
+                XElement secondElements = element.Descendants(secondElementName).FirstOrDefault();
+                foreach (var course in secondElements.Elements())
                 {
-                    int lecturerId = Convert.ToInt32(lecturer.Attribute("id").Value);
-                    bindingCoursesLecturersDictionary.Add(new KeyValuePair<int, int>(courseId, lecturerId));
+                    int secondId = Convert.ToInt32(course.Attribute("id").Value);
+                    bindingDictionary.Add(new KeyValuePair<int, int>(firstId, secondId));
                 }
             }
 
-            return bindingCoursesLecturersDictionary;
-        }
-
-        private List<KeyValuePair<int, int>> GetCoursesStudentsBindingDictionary(XElement coursesNode)
-        {
-            List<KeyValuePair<int, int>> bindingCoursesStudentsDictionary = new List<KeyValuePair<int, int>>();
-
-            foreach (var course in coursesNode.Elements())
-            {
-                int courseId = Convert.ToInt32(course.Attribute("id").Value);
-                XElement students = course.Descendants("students").FirstOrDefault();
-                foreach (var student in students.Elements())
-                {
-                    int studentId = Convert.ToInt32(student.Attribute("id").Value);
-                    bindingCoursesStudentsDictionary.Add(new KeyValuePair<int, int>(courseId, studentId));
-                }
-            }
-
-            return bindingCoursesStudentsDictionary;
-        }
-
-        private List<KeyValuePair<int, int>> GetCoursesHometasksBindingDictionary(XElement coursesNode)
-        {
-            List<KeyValuePair<int, int>> bindingCoursesHometasksDictionary = new List<KeyValuePair<int, int>>();
-
-            foreach (var course in coursesNode.Elements())
-            {
-                int courseId = Convert.ToInt32(course.Attribute("id").Value);
-                XElement hometasks = course.Descendants("hometasks").FirstOrDefault();
-                foreach (var hometask in hometasks.Elements())
-                {
-                    int hometaskId = Convert.ToInt32(hometask.Attribute("id").Value);
-                    bindingCoursesHometasksDictionary.Add(new KeyValuePair<int, int>(courseId, hometaskId));
-                }
-            }
-
-            return bindingCoursesHometasksDictionary;
-        }
-
-        private List<KeyValuePair<int, int>> GetStudentsMarksBindingDictionary(XElement studentsNode)
-        {
-            List<KeyValuePair<int, int>> bindingStudentsMarksDictionary = new List<KeyValuePair<int, int>>();
-
-            foreach (var student in studentsNode.Elements())
-            {
-                int studentId = Convert.ToInt32(student.Attribute("id").Value);
-                XElement marks = student.Descendants("hometask-marks").FirstOrDefault();
-                foreach (var mark in marks.Elements())
-                {
-                    int markId = Convert.ToInt32(mark.Attribute("id").Value);
-                    bindingStudentsMarksDictionary.Add(new KeyValuePair<int, int>(studentId, markId));
-                }
-            }
-
-            return bindingStudentsMarksDictionary;
-        }
-
-        private List<KeyValuePair<int, int>> GetMarksHometasksBindingDictionary(XElement marksNode)
-        {
-            List<KeyValuePair<int, int>> bindingMarksHometasksDictionary = new List<KeyValuePair<int, int>>();
-
-            foreach (var mark in marksNode.Elements())
-            {
-                int markId = Convert.ToInt32(mark.Attribute("id").Value);
-                XElement hometasks = mark.Descendants("hometask").FirstOrDefault();
-                foreach (var hometask in hometasks.Elements())
-                {
-                    int hometaskId = Convert.ToInt32(hometask.Attribute("id").Value);
-                    bindingMarksHometasksDictionary.Add(new KeyValuePair<int, int>(markId, hometaskId));
-                }
-            }
-
-            return bindingMarksHometasksDictionary;
-        }
-
-        private List<KeyValuePair<int, int>> GetMarksCouresBindingDictionary(XElement marksNode)
-        {
-            List<KeyValuePair<int, int>> bindingMarksCoursesDictionary = new List<KeyValuePair<int, int>>();
-
-            foreach (var mark in marksNode.Elements())
-            {
-                int markId = Convert.ToInt32(mark.Attribute("id").Value);
-                XElement courses = mark.Descendants("course").FirstOrDefault();
-                foreach (var course in courses.Elements())
-                {
-                    int coursekId = Convert.ToInt32(course.Attribute("id").Value);
-                    bindingMarksCoursesDictionary.Add(new KeyValuePair<int, int>(markId, coursekId));
-                }
-            }
-
-            return bindingMarksCoursesDictionary;
+            return bindingDictionary;
         }
     }
 }
