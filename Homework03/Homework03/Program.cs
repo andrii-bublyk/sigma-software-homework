@@ -27,6 +27,11 @@ namespace Homework03
             // Task 2
             Console.WriteLine("Task2:");
             string inputString2 = "Jason Puncheon, 26/06/1986; Jos Hooiveld, 22/04/1983; Kelvin Davis, 29/09/1976; Luke Shaw, 12/07/1995; Gaston Ramirez, 02/12/1990; Adam Lallana, 10/05/1988";
+            //var result = inputString2.Split(';')
+            //    .Select(playeyWithYear => playeyWithYear.Split(','))
+            //    .Select(s => new { Player = s[0], Year = DateTime.Parse(s[1]) })
+            //    .OrderBy(element => element.Year)
+            //    .Select(p => p.Player);
             string[] splitedString2 = inputString2.Split(new[] { "; " }, StringSplitOptions.None);
 
             var players = splitedString2.Select(n =>
