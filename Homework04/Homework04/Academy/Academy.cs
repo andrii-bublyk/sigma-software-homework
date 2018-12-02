@@ -13,6 +13,7 @@ namespace Homework04
         public List<Student> Students;
         public List<Lecturer> Lecturers;
         public List<Hometask> Hometasks;
+        public List<HometaskMark> HometasksMarks;
 
         public Academy()
         {
@@ -20,6 +21,7 @@ namespace Homework04
             Students = new List<Student>();
             Lecturers = new List<Lecturer>();
             Hometasks = new List<Hometask>();
+            HometasksMarks = new List<HometaskMark>();
         }
     }
 }

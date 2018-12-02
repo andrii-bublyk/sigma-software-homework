@@ -15,6 +15,11 @@ namespace Homework04
         public Course Course { get; set; }
         public Hometask Hometask { get; set; }
 
+        public HometaskMark()
+        {
+
+        }
+
         public HometaskMark(int id, DateTime complitionDate, bool done)
         {
             Id = id;

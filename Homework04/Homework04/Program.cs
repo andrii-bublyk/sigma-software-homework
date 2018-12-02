@@ -40,6 +40,7 @@ namespace Homework04
             AcademyXmlReader academyXmlReader = new AcademyXmlReader();
             Academy academy2 = academyXmlReader.GetAcademyObjectModelFromXml("academy02.xml");
 
+            academyXmlWriter.GenerateXmlPresentation(academy2, "academy03.xml");
             Console.ReadKey();
         }
 
@@ -97,6 +98,9 @@ namespace Homework04
             academy.Courses.Add(course2);
             academy.Students.Add(student2);
             academy.Hometasks.Add(hometask2);
+
+            academy.HometasksMarks.Add(mark1);
+            academy.HometasksMarks.Add(mark2);
 
             return academy;
         }

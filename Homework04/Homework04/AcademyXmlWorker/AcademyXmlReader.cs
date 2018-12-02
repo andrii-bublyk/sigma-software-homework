@@ -31,9 +31,16 @@ namespace Homework04.AcademyXmlWorker
             XElement hometasksNode = academyNode.Descendants("hometasks-list").FirstOrDefault();
             List<Hometask> hometasks = GetHometasksFromNode(hometasksNode);
 
+            XElement hometasksMarksNode = academyNode.Descendants("hometasks-marks-list").FirstOrDefault();
+            List<HometaskMark> hometasksMarks = GetHometasksMarksFromNode(hometasksMarksNode);
+
             List<KeyValuePair<int, int>> bindingCoursesLecturersDictionary = GetCoursesLecturersBindingDictionary(coursesNode);
             List<KeyValuePair<int, int>> bindingCoursesStudentsDictionary = GetCoursesStudentsBindingDictionary(coursesNode);
             List<KeyValuePair<int, int>> bindingCoursesHometasksDictionary = GetCoursesHometasksBindingDictionary(coursesNode);
+
+            List<KeyValuePair<int, int>> bindingStudentsMarksDictionary = GetStudentsMarksBindingDictionary(studentsNode);
+            List<KeyValuePair<int, int>> bindingMarksHometasksDictionary = GetMarksHometasksBindingDictionary(hometasksMarksNode);
+            List<KeyValuePair<int, int>> bindingMarksCoursesDictionary = GetMarksCouresBindingDictionary(hometasksMarksNode);
             
             // courses and lecturers binding
             foreach (var courseLecturer in bindingCoursesLecturersDictionary)
@@ -65,14 +72,43 @@ namespace Homework04.AcademyXmlWorker
                 hometask.Course = course; ;
             }
 
+            // staudents and marks binding
+            foreach (var studentMark in bindingStudentsMarksDictionary)
+            {
+                Student student = students.Where(n => n.Id == studentMark.Key).First();
+                HometaskMark mark = hometasksMarks.Where(n => n.Id == studentMark.Value).First();
+
+                student.Marks.Add(mark);
+            }
+
+            // marks and hometasks binding
+            foreach (var markHometask in bindingMarksHometasksDictionary)
+            {
+                HometaskMark mark = hometasksMarks.Where(n => n.Id == markHometask.Key).First();
+                Hometask hometask = hometasks.Where(n => n.Id == markHometask.Value).First();
+
+                mark.Hometask = hometask;
+                hometask.HomeworkMarks.Add(mark);
+            }
+
+            // marks and courses binding
+            foreach (var markHometask in bindingMarksCoursesDictionary)
+            {
+                HometaskMark mark = hometasksMarks.Where(n => n.Id == markHometask.Key).First();
+                Course course = courses.Where(n => n.Id == markHometask.Value).First();
+
+                mark.Course = course;
+            }
+
             academy.Courses = courses;
             academy.Lecturers = lecturers;
             academy.Students = students;
             academy.Hometasks = hometasks;
+            academy.HometasksMarks = hometasksMarks;
 
             return academy;
         }
-
+        
         private static List<Course> GetCoursesFromNode(XElement coursesNode)
         {
             List<Course> courses = new List<Course>();
@@ -146,6 +182,23 @@ namespace Homework04.AcademyXmlWorker
 
             return hometasks;
         }
+        
+        private static List<HometaskMark> GetHometasksMarksFromNode(XElement hometasksMarksNode)
+        {
+            List<HometaskMark> hometasksMarks = new List<HometaskMark>();
+            foreach (var mark in hometasksMarksNode.Elements())
+            {
+                HometaskMark importMark = new HometaskMark
+                {
+                    Id = Convert.ToInt32(mark.Attribute("id").Value),
+                    ComplitionDate = mark.Attribute("complition-date").Value.GetDate(),
+                    Done = Convert.ToBoolean(mark.Attribute("done").Value)
+                };
+                hometasksMarks.Add(importMark);
+            }
+
+            return hometasksMarks;
+        }
 
         private List<KeyValuePair<int, int>> GetCoursesLecturersBindingDictionary(XElement coursesNode)
         {
@@ -199,6 +252,60 @@ namespace Homework04.AcademyXmlWorker
             }
 
             return bindingCoursesHometasksDictionary;
+        }
+
+        private List<KeyValuePair<int, int>> GetStudentsMarksBindingDictionary(XElement studentsNode)
+        {
+            List<KeyValuePair<int, int>> bindingStudentsMarksDictionary = new List<KeyValuePair<int, int>>();
+
+            foreach (var student in studentsNode.Elements())
+            {
+                int studentId = Convert.ToInt32(student.Attribute("id").Value);
+                XElement marks = student.Descendants("hometask-marks").FirstOrDefault();
+                foreach (var mark in marks.Elements())
+                {
+                    int markId = Convert.ToInt32(mark.Attribute("id").Value);
+                    bindingStudentsMarksDictionary.Add(new KeyValuePair<int, int>(studentId, markId));
+                }
+            }
+
+            return bindingStudentsMarksDictionary;
+        }
+
+        private List<KeyValuePair<int, int>> GetMarksHometasksBindingDictionary(XElement marksNode)
+        {
+            List<KeyValuePair<int, int>> bindingMarksHometasksDictionary = new List<KeyValuePair<int, int>>();
+
+            foreach (var mark in marksNode.Elements())
+            {
+                int markId = Convert.ToInt32(mark.Attribute("id").Value);
+                XElement hometasks = mark.Descendants("hometask").FirstOrDefault();
+                foreach (var hometask in hometasks.Elements())
+                {
+                    int hometaskId = Convert.ToInt32(hometask.Attribute("id").Value);
+                    bindingMarksHometasksDictionary.Add(new KeyValuePair<int, int>(markId, hometaskId));
+                }
+            }
+
+            return bindingMarksHometasksDictionary;
+        }
+
+        private List<KeyValuePair<int, int>> GetMarksCouresBindingDictionary(XElement marksNode)
+        {
+            List<KeyValuePair<int, int>> bindingMarksCoursesDictionary = new List<KeyValuePair<int, int>>();
+
+            foreach (var mark in marksNode.Elements())
+            {
+                int markId = Convert.ToInt32(mark.Attribute("id").Value);
+                XElement courses = mark.Descendants("course").FirstOrDefault();
+                foreach (var course in courses.Elements())
+                {
+                    int coursekId = Convert.ToInt32(course.Attribute("id").Value);
+                    bindingMarksCoursesDictionary.Add(new KeyValuePair<int, int>(markId, coursekId));
+                }
+            }
+
+            return bindingMarksCoursesDictionary;
         }
     }
 }

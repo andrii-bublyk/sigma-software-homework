@@ -41,10 +41,17 @@ namespace Homework04.AcademyXmlWorker
                 hometasksList.Add(GetHometaskXmlPresentation(hometask));
             }
 
+            XElement marksList = new XElement("hometasks-marks-list");
+            foreach (var mark in academy.HometasksMarks)
+            {
+                marksList.Add(GetMarkXmlPresentation(mark));
+            }
+
             root.Add(coursesList);
             root.Add(lecturersList);
             root.Add(studentsList);
             root.Add(hometasksList);
+            root.Add(marksList);
 
             document.Save(fileName);
         }
@@ -125,10 +132,12 @@ namespace Homework04.AcademyXmlWorker
                                              );
             }
 
-            XElement marksList = new XElement("marks-list");
+            XElement marksList = new XElement("hometask-marks");
             foreach (var mark in student.Marks)
             {
-                marksList.Add(GetMarkXmlPresentation(mark));
+                marksList.Add(new XElement("mark", new XAttribute("id", mark.Id),
+                                                           new XAttribute("done", mark.Done))
+                                     );
             }
 
             studentElement.Add(coursesList);
