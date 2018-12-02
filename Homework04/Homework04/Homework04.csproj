@@ -42,7 +42,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AcademyXmlWorker\AcademyXmlReader.cs" />
     <Compile Include="AcademyXmlWorker\AcademyXmlWriter.cs" />
     <Compile Include="Academy\Academy.cs" />
     <Compile Include="Academy\Course.cs" />

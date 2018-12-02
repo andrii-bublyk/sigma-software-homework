@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -31,16 +32,24 @@ namespace Homework04
     {
         static void Main(string[] args)
         {
-            // Generate init academy
             Academy academy = GenerateSimpleAcademy();
-            AcademyXmlWriter academyXmlWriter = new AcademyXmlWriter();
-            academyXmlWriter.GenerateXmlPresentation(academy, "academy02.xml");
+            AcademyXmlSerializer academyXmlSerializer = new AcademyXmlSerializer();
 
-            // Load academy from XML
-            AcademyXmlReader academyXmlReader = new AcademyXmlReader();
-            Academy academy2 = academyXmlReader.GetAcademyObjectModelFromXml("academy02.xml");
+            using (FileStream fs = new FileStream("academy02.xml", FileMode.OpenOrCreate))
+            {
+                academyXmlSerializer.Serialize(fs, academy);
+            }
 
-            academyXmlWriter.GenerateXmlPresentation(academy2, "academy03.xml");
+            Academy academy2 = new Academy();
+            using (FileStream fs = new FileStream("academy02.xml", FileMode.OpenOrCreate))
+            {
+                academy2 = academyXmlSerializer.Deserialize(fs);
+            }
+
+            using (FileStream fs = new FileStream("academy03.xml", FileMode.OpenOrCreate))
+            {
+                academyXmlSerializer.Serialize(fs, academy2);
+            }
             Console.ReadKey();
         }
 
@@ -53,6 +62,7 @@ namespace Homework04
             HometaskMark mark1 = new HometaskMark(1, new DateTime(2018, 10, 11), true);
 
             Course course2 = new Course(2, "course02", new DateTime(2018, 11, 5), new DateTime(2019, 1, 22), 80);
+            Lecturer lecturer2 = new Lecturer(2, "Lecturer2", new DateTime(1982, 12, 2));
             Student student2 = new Student(2, "student2", "380xxxxxxxx2", "email2@gmail.com", "github2.com");
             Hometask hometask2 = new Hometask(2, "task2", "description2", new DateTime(2018, 12, 10), 3);
             HometaskMark mark2 = new HometaskMark(2, new DateTime(2018, 12, 11), false);
@@ -93,6 +103,7 @@ namespace Homework04
             academy.Courses.Add(course1);
             academy.Students.Add(student1);
             academy.Lecturers.Add(lecturer1);
+            academy.Lecturers.Add(lecturer2);
             academy.Hometasks.Add(hometask1);
 
             academy.Courses.Add(course2);
