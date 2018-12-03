@@ -23,7 +23,10 @@ namespace Homework05
             //}
 
             List<Course> courses = AcademyDbAdapter.AcademyDbAdapter.GetAllCourses();
+            List<Lecturer> lecturers = AcademyDbAdapter.AcademyDbAdapter.GetAllLecturers();
             List<Student> students = AcademyDbAdapter.AcademyDbAdapter.GetAllStudents();
+            List<Hometask> hometasks = AcademyDbAdapter.AcademyDbAdapter.GetAllHometasks();
+            List<HomeTaskAssessment> homeTaskAssessments = AcademyDbAdapter.AcademyDbAdapter.GetAllHomeTasksAssessments();
 
             Console.ReadKey();
         }
