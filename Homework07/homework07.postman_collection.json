@@ -1,0 +1,180 @@
+{
+	"info": {
+		"_postman_id": "440f8be7-8293-4cc0-a4d6-b93976f2650f",
+		"name": "homework07",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:52210/students",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:52210/students",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52210",
+					"path": [
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:52210/courses",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"id\": 0,\n    \"name\": null,\n    \"birthday\": \"0001-01-01T00:00:00\",\n    \"phoneNumber\": null,\n    \"email\": null,\n    \"githubLink\": \"github.com\",\n    \"notes\": null\n}"
+				},
+				"url": {
+					"raw": "http://localhost:52210/courses",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52210",
+					"path": [
+						"courses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:52210/students",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Bla\",\n    \"id\": 5,\n    \"courses\": null,\n    \"birthDate\": \"1983-07-31T00:00:00\",\n    \"phoneNumber\": \"380672528114\",\n    \"email\": \"oles_kash@hotmail.com\",\n    \"gitHubLink\": \"https://github.com/oleskash\",\n    \"notes\": \"Skype: oles_kash\",\n    \"homeTaskAssessments\": null\n}"
+				},
+				"url": {
+					"raw": "http://localhost:52210/students",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52210",
+					"path": [
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:52210/students",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"BlaBla\",\n    \"id\": 3024,\n    \"courses\": null,\n    \"birthDate\": \"1983-07-31T00:00:00\",\n    \"phoneNumber\": \"380672528114\",\n    \"email\": \"oles_kash@hotmail.com\",\n    \"gitHubLink\": \"https://github.com/oleskash\",\n    \"notes\": \"Skype: oles_kash\",\n    \"homeTaskAssessments\": null\n}"
+				},
+				"url": {
+					"raw": "http://localhost:52210/students",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52210",
+					"path": [
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:52210/students/3024",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:52210/students/3024",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52210",
+					"path": [
+						"students",
+						"3024"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:52210/students/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:52210/students/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52210",
+					"path": [
+						"students",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
