@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewData["Title"] = "Courses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<Models.Models.Course>
+
+<h2>Courses</h2>
+<a href="/Courses/Create">Add new course</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PassCredits)
+            </th>
+            <th>
+                Operations
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var course in Model)
+        {
+            <tr>
+                <td>
+                    @course.Name
+                </td>
+                <td>
+                    @course.StartDate
+                </td>
+                <td>
+                    @course.EndDate
+                </td>
+                <td>
+                    @course.PassCredits
+                </td>
+                <td>
+                    @Html.ActionLink("Assign Lecturers", "AssignLecturers", new { id = course.Id }) |
+                    @Html.ActionLink("Assign Students", "AssignStudents", new { id = course.Id }) |
+                    @Html.ActionLink("Edit", "Edit", new { id = course.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = course.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -37,12 +37,15 @@ namespace ASP.NET.Demo
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseMvcWithDefaultRoute();
+            app.UseStaticFiles();
 
-            //app.Run(async (context) =>
-            //{
-            //    await context.Response.WriteAsync("Hello World!");
-            //});
+            //app.UseMvcWithDefaultRoute();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    "default", "{controller=Courses}/{action=Courses}/{id?}"
+                    );
+            });
         }
     }
 }

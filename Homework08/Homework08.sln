@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2000
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.ADO", "DataAccess.ADO\DataAccess.ADO.csproj", "{F92D8582-FA32-4E96-AEA7-491893ECABD0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "Models\Models.csproj", "{47C11C2E-8984-4BC0-83AE-958F5564B55C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Homework08", "Homework08\Homework08.csproj", "{D8044B53-44ED-4B4D-B390-7ADF970ABB8E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F92D8582-FA32-4E96-AEA7-491893ECABD0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F92D8582-FA32-4E96-AEA7-491893ECABD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F92D8582-FA32-4E96-AEA7-491893ECABD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F92D8582-FA32-4E96-AEA7-491893ECABD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{47C11C2E-8984-4BC0-83AE-958F5564B55C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{47C11C2E-8984-4BC0-83AE-958F5564B55C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{47C11C2E-8984-4BC0-83AE-958F5564B55C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{47C11C2E-8984-4BC0-83AE-958F5564B55C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8044B53-44ED-4B4D-B390-7ADF970ABB8E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8044B53-44ED-4B4D-B390-7ADF970ABB8E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8044B53-44ED-4B4D-B390-7ADF970ABB8E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8044B53-44ED-4B4D-B390-7ADF970ABB8E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {023FD275-FE5E-44C2-A7F9-8B8210186149}
+	EndGlobalSection
+EndGlobal
