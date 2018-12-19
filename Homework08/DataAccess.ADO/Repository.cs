@@ -456,6 +456,39 @@ SELECT CAST(scope_identity() AS int)
             }
         }
 
+        public HomeTaskAssessment GetHomeTaskAssessmentById(int assessmentId)
+        {
+            HomeTaskAssessment homeTaskAssessment = new HomeTaskAssessment();
+            using (SqlConnection connection = GetConnection())
+            {
+                SqlCommand sqlCommand = new SqlCommand(
+                    $@"
+                   SELECT [Id]
+                  ,[IsComplete]
+                  ,[Date]
+                  ,[StudentId]
+                  ,[HomeTaskId]
+                  FROM [dbo].[HomeTaskAssessment]
+                  where Id =  {assessmentId}", connection);
+
+                using (var reader = sqlCommand.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        homeTaskAssessment.Id = reader.GetInt32(0);
+                        homeTaskAssessment.IsComplete = reader.GetBoolean(1);
+                        homeTaskAssessment.Date = reader.GetDateTime(2);
+                        int studentId = reader.GetInt32(3);
+                        int homeTaskId = reader.GetInt32(4);
+                        homeTaskAssessment.Student = this.GetStudentById(studentId, false);
+                        homeTaskAssessment.HomeTask = GetHomeTaskById(homeTaskId, false);
+                    }
+                }
+            }
+
+            return homeTaskAssessment;
+        }
+
         public void SetStudentsToCourse(int courseId, IEnumerable<int> studentsId)
         {
             using (SqlConnection connection = GetConnection())
@@ -584,7 +617,7 @@ SELECT CAST(scope_identity() AS int)
             return connection;
         }
 
-        private List<HomeTaskAssessment> GetHomeTaskAssessmentsByHomeTaskId(int homeTaskId)
+        public List<HomeTaskAssessment> GetHomeTaskAssessmentsByHomeTaskId(int homeTaskId)
         {
             List<HomeTaskAssessment> result = new List<HomeTaskAssessment>();
             using (SqlConnection connection = GetConnection())
@@ -618,7 +651,7 @@ SELECT CAST(scope_identity() AS int)
             return result;
         }
 
-        private List<HomeTaskAssessment> GetHomeTaskAssessmentsByStudentId(int studentId)
+        public List<HomeTaskAssessment> GetHomeTaskAssessmentsByStudentId(int studentId)
         {
             List<HomeTaskAssessment> result = new List<HomeTaskAssessment>();
             using (SqlConnection connection = GetConnection())
@@ -641,9 +674,9 @@ SELECT CAST(scope_identity() AS int)
                         homeTaskAssessment.Id = reader.GetInt32(0);
                         homeTaskAssessment.IsComplete = reader.GetBoolean(1);
                         homeTaskAssessment.Date = reader.GetDateTime(2);
-                        //int homeTaskId = reader.GetInt32(4);
-                        //homeTaskAssessment.Student = this.GetStudentById(studentId);
-                        //homeTaskAssessment.HomeTask = GetHomeTaskById(homeTaskId);
+                        int homeTaskId = reader.GetInt32(4);
+                        homeTaskAssessment.Student = this.GetStudentById(studentId, false);
+                        homeTaskAssessment.HomeTask = GetHomeTaskById(homeTaskId, false);
                         result.Add(homeTaskAssessment);
                     }
                 }

@@ -57,6 +57,22 @@ namespace Homework08.Controllers
         public IActionResult Create(HomeTask homeTask)
         {
             repository.CreateHomeTask(homeTask, homeTask.Course.Id);
+
+            Course course = repository.GetCourse(homeTask.Course.Id);
+
+            List<HomeTaskAssessment> assessments = new List<HomeTaskAssessment>();
+            foreach (var student in course.Students)
+            {
+                assessments.Add(new HomeTaskAssessment()
+                {
+                    IsComplete = false,
+                    Date = DateTime.Now,
+                    HomeTask = homeTask,
+                    Student = student
+                });
+            }
+            repository.CreateHomeTaskAssessments(assessments);
+
             return RedirectToAction("CourseHometasks", new { id = homeTask.Course.Id });
         }
 
