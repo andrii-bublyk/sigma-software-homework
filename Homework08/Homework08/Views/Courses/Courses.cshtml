@@ -45,6 +45,7 @@
                     @course.PassCredits
                 </td>
                 <td>
+                    @Html.RouteLink("Hometasks", new { controller = "Hometask", action = "CourseHometasks", id = course.Id }) |
                     @Html.ActionLink("Assign Lecturers", "AssignLecturers", new { id = course.Id }) |
                     @Html.ActionLink("Assign Students", "AssignStudents", new { id = course.Id }) |
                     @Html.ActionLink("Edit", "Edit", new { id = course.Id }) |
