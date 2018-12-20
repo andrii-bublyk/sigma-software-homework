@@ -1,0 +1,30 @@
+﻿
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Models.Models.HomeTaskAssessment
+
+<h2>Edit homeTask assessment</h2>
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="HomeTask.Id" value="@Model.HomeTask.Id" />
+    <input type="hidden" asp-for="Student.Id" value="@Model.Student.Id" />
+
+    <div>
+        <label asp-for="HomeTask.Title"></label>
+        <label asp-for="@Model.HomeTask.Title"></label>
+    </div>
+    <div>
+        <label asp-for="IsComplete"></label>
+        <input asp-for="IsComplete" />
+    </div>
+    <div>
+        <label asp-for="Date"></label>
+        <input asp-for="Date" />
+    </div>
+    <div>
+        <input type="submit" value="Save" />
+    </div>
+</form>
+@Html.ActionLink("Back to assesments list", "StudentAssessments", new { studentId = Model.Student.Id })

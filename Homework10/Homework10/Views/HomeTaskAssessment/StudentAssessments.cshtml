@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewData["Title"] = "StudentAssessments";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<Models.Models.HomeTaskAssessment>
+
+<h2>@ViewData["studentName"] assessments</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.HomeTask.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsComplete)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                Operations
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var assessment in Model)
+        {
+            <tr>
+                <td>
+                    @assessment.HomeTask.Title
+                </td>
+                <td>
+                    @assessment.IsComplete
+                </td>
+                <td>
+                    @assessment.Date
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = assessment.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="/Students/Students">Back to students list</a>

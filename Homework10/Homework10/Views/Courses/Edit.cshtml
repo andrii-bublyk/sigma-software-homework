@@ -1,0 +1,32 @@
+﻿
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Models.Models.Course
+
+<h2>Edit course</h2>
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+    </div>
+    <div>
+        <label asp-for="StartDate"></label>
+        <input asp-for="StartDate" />
+    </div>
+    <div>
+        <label asp-for="EndDate"></label>
+        <input asp-for="EndDate" />
+    </div>
+    <div>
+        <label asp-for="PassCredits"></label>
+        <input asp-for="PassCredits" />
+    </div>
+    <div>
+        <input type="submit" value="Save" />
+    </div>
+</form>
+<a href="/Courses">Back to courses list</a>

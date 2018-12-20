@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "AssignStudents";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Homework08.ViewModels.CourseStudentsAssignmentViewModel
+
+<form method="post" action="~/Courses/AssignStudents">
+    <h2>Assign students to course @Model.Course.Name</h2>
+    @Html.HiddenFor(m => Model.Course.Id)
+    <table>
+        <thead>
+            <tr>
+                <th>Student name</th>
+                <th>Assigned</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.StudentsList.Count; i++)
+            {
+                <tr>
+                    <td>@Model.StudentsList[i].Student.Name</td>
+                    <td>
+                        @Html.CheckBoxFor(m => Model.StudentsList[i].IsAssigned)
+                    </td>
+                    @Html.HiddenFor(m => Model.StudentsList[i].Student.Id)
+                </tr>
+            }
+        </tbody>
+    </table>
+    <input type="submit" value="Save" />
+</form>
+
+<a href="/Courses">Back to courses list</a>
