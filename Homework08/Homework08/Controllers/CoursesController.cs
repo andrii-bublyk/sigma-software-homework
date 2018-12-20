@@ -81,8 +81,37 @@ namespace Homework08.Controllers
         [HttpPost]
         public IActionResult AssignStudents(CourseStudentsAssignmentViewModel model)
         {
-            var assignedStudentsId = model.StudentsList.Where(a => a.IsAssigned).Select(s => s.Student.Id);
+            var assignedStudentsId = model.StudentsList.Where(a => a.IsAssigned)
+                .Select(s => s.Student.Id);
             repository.SetStudentsToCourse(model.Course.Id, assignedStudentsId);
+
+            var courseHometasksIds = repository.GetCourse(model.Course.Id).HomeTasks
+                .Select(h => h.Id);
+
+            foreach (var studentId in assignedStudentsId)
+            {
+                var studentHometaskIds = repository.GetStudentById(studentId, true).HomeTaskAssessments
+                    .Select(a => a.HomeTask.Id);
+
+                var missingHometasksId = courseHometasksIds.Except(studentHometaskIds);
+
+                List<HomeTaskAssessment> assessments = new List<HomeTaskAssessment>();
+                foreach (var hometaskId in missingHometasksId)
+                {
+                    HomeTaskAssessment assessment = new HomeTaskAssessment()
+                    {
+                        IsComplete = false,
+                        Date = DateTime.Now,
+                        HomeTask = new HomeTask() { Id = hometaskId },
+                        Student = new Student() { Id = studentId }
+                    };
+
+                    assessments.Add(assessment);
+                }
+
+                repository.CreateHomeTaskAssessments(assessments);
+            }
+
             return RedirectToAction("Courses");
         }
 
