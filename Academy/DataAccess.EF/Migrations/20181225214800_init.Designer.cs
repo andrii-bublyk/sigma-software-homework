@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.EF.Migrations
 {
     [DbContext(typeof(AcademyContext))]
-    [Migration("20181225072907_init")]
+    [Migration("20181225214800_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,7 +27,8 @@ namespace DataAccess.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("EndDate");
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -35,7 +36,8 @@ namespace DataAccess.EF.Migrations
 
                     b.Property<int>("PassCredits");
 
-                    b.Property<DateTime>("StartDate");
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("date");
 
                     b.HasKey("Id");
 
@@ -50,7 +52,8 @@ namespace DataAccess.EF.Migrations
 
                     b.Property<int>("CourseId");
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("date");
 
                     b.Property<string>("Description");
 
@@ -62,8 +65,6 @@ namespace DataAccess.EF.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CourseId");
-
                     b.ToTable("HomeTask");
                 });
 
@@ -73,7 +74,8 @@ namespace DataAccess.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("Date");
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("date");
 
                     b.Property<int>("HomeTaskId");
 
@@ -82,10 +84,6 @@ namespace DataAccess.EF.Migrations
                     b.Property<int>("StudentId");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("HomeTaskId");
-
-                    b.HasIndex("StudentId");
 
                     b.ToTable("HomeTaskAssessment");
                 });
@@ -96,7 +94,8 @@ namespace DataAccess.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("BirthDate");
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -109,13 +108,15 @@ namespace DataAccess.EF.Migrations
 
             modelBuilder.Entity("Models.AcademyModels.LecturerCourse", b =>
                 {
-                    b.Property<int>("LecturerId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CourseId");
 
-                    b.HasKey("LecturerId", "CourseId");
+                    b.Property<int>("LecturerId");
 
-                    b.HasIndex("CourseId");
+                    b.HasKey("Id");
 
                     b.ToTable("LecturerCourse");
                 });
@@ -126,7 +127,8 @@ namespace DataAccess.EF.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("BirthDate");
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -155,13 +157,15 @@ namespace DataAccess.EF.Migrations
 
             modelBuilder.Entity("Models.AcademyModels.StudentCourse", b =>
                 {
-                    b.Property<int>("StudentId");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<int>("CourseId");
 
-                    b.HasKey("StudentId", "CourseId");
+                    b.Property<int>("StudentId");
 
-                    b.HasIndex("CourseId");
+                    b.HasKey("Id");
 
                     b.ToTable("StudentCourse");
                 });
@@ -205,53 +209,6 @@ namespace DataAccess.EF.Migrations
                     b.HasData(
                         new { Id = 1, Email = "admin@gmail.com", Password = "qwerty", RoleId = 1 }
                     );
-                });
-
-            modelBuilder.Entity("Models.AcademyModels.HomeTask", b =>
-                {
-                    b.HasOne("Models.AcademyModels.Course", "Course")
-                        .WithMany("HomeTasks")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Models.AcademyModels.HomeTaskAssessment", b =>
-                {
-                    b.HasOne("Models.AcademyModels.HomeTask", "HomeTask")
-                        .WithMany("HomeTaskAssessments")
-                        .HasForeignKey("HomeTaskId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Models.AcademyModels.Student", "Student")
-                        .WithMany("HomeTaskAssessments")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Models.AcademyModels.LecturerCourse", b =>
-                {
-                    b.HasOne("Models.AcademyModels.Course", "Course")
-                        .WithMany("LecturerCourses")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("Models.AcademyModels.Lecturer", "Lecturer")
-                        .WithMany("LecturerCourses")
-                        .HasForeignKey("LecturerId")
-                        .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("Models.AcademyModels.StudentCourse", b =>
-                {
-                    b.HasOne("Models.AcademyModels.Course", "Course")
-                        .WithMany("StudentCourses")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Models.AcademyModels.Student", "Student")
-                        .WithMany("StudentCourses")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Models.AuthorizationModels.User", b =>

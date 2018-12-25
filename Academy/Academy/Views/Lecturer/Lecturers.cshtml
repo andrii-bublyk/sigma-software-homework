@@ -3,6 +3,40 @@
     ViewData["Title"] = "Lecturers";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@model IEnumerable<Models.AcademyModels.Lecturer>
 
 <h2>Lecturers</h2>
+<a href="/Lecturer/Create">Add new lecturer</a>
 
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BirthDate)
+            </th>
+            <th>
+                Operations
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lecturer in Model)
+        {
+            <tr>
+                <td>
+                    @lecturer.Name
+                </td>
+                <td>
+                    @lecturer.BirthDate
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = lecturer.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = lecturer.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

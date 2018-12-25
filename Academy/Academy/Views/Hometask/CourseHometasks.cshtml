@@ -1,0 +1,57 @@
+﻿
+@{
+    ViewData["Title"] = "CourseHometasks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<Models.AcademyModels.HomeTask>
+
+<h2>@ViewData["courseName"] course hometasks</h2>
+
+@Html.ActionLink("Add new hometask", "Create", new { courseId = ViewData["courseId"] })
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Number)
+            </th>
+            <th>
+                Operations
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var hometask in Model)
+        {
+            <tr>
+                <td>
+                    @hometask.Title
+                </td>
+                <td>
+                    @hometask.Date
+                </td>
+                <td>
+                    @hometask.Description
+                </td>
+                <td>
+                    @hometask.Number
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = hometask.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = hometask.Id })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="/Course/Courses">Back to courses list</a>

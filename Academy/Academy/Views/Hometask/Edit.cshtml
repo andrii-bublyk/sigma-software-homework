@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Models.AcademyModels.HomeTask
+
+<h2>Edit hometask</h2>
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="CourseId" value="@Model.CourseId" />
+
+    <div>
+        <label asp-for="Title"></label>
+        <input asp-for="Title" />
+    </div>
+    <div>
+        <label asp-for="Date"></label>
+        <input asp-for="Date" />
+    </div>
+    <div>
+        <label asp-for="Description"></label>
+        <input asp-for="Description" />
+    </div>
+    <div>
+        <label asp-for="Number"></label>
+        <input asp-for="Number" />
+    </div>
+    <div>
+        <input type="submit" value="Save" />
+    </div>
+</form>
+@Html.ActionLink("Back to hometasks list", "CourseHometasks", new { courseId = Model.CourseId })

@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Models.AcademyModels.Lecturer
+
+<h2>Edit new lecturer</h2>
+<form asp-action="Edit">
+    <input type="hidden" asp-for="Id" />
+
+    <div>
+        <label asp-for="Name"></label>
+        <input asp-for="Name" />
+    </div>
+    <div>
+        <label asp-for="BirthDate"></label>
+        <input asp-for="BirthDate" />
+    </div>
+    <div>
+        <input type="submit" value="Save" />
+    </div>
+</form>
+<a href="/Lecturers">Back to lecturers list</a>

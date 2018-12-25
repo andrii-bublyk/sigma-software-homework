@@ -4,15 +4,61 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Models.AcademyModels;
+using Services;
 
 namespace Academy.Controllers
 {
     public class StudentController : Controller
     {
+        private readonly StudentService studentService;
+
+        public StudentController(StudentService studentService)
+        {
+            this.studentService = studentService;
+        }
+
+        [HttpGet]
         [Authorize(Roles = "admin")]
         public IActionResult Students()
         {
+            return View(studentService.GetAllStudents());
+        }
+
+        [HttpGet]
+        public IActionResult Create()
+        {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Create(Student newStudent)
+        {
+            studentService.CreateStudent(newStudent);
+            return RedirectToAction("Students");
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            Student student = studentService.GetStudent(id);
+            if (student == null)
+                return NotFound();
+            return View(student);
+        }
+
+        [HttpPost]
+        public IActionResult Edit(Student student)
+        {
+            studentService.UpdateStudent(student);
+            return RedirectToAction("Students");
+        }
+
+        [HttpGet]
+        public IActionResult Delete(int id)
+        {
+            studentService.DeleteStudent(id);
+            return RedirectToAction("Students");
         }
     }
 }

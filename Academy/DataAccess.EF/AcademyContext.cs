@@ -22,7 +22,7 @@ namespace DataAccess.EF
         //    optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=AcademyDb;Trusted_Connection=True;");
         //}
         //
-        //
+
         private readonly IOptions<RepositoryOptions> options;
 
         public AcademyContext(IOptions<RepositoryOptions> options)
@@ -30,10 +30,12 @@ namespace DataAccess.EF
             this.options = options;
         }
 
+        //
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlServer(options.Value.DefaultConnectionString);
+            //optionsBuilder.UseLazyLoadingProxies();
         }
         //
 
@@ -46,11 +48,13 @@ namespace DataAccess.EF
         public DbSet<HomeTask> HomeTask { get; set; }
         public DbSet<HomeTaskAssessment> HomeTaskAssessment { get; set; }
 
+        public DbSet<LecturerCourse> LecturerCourse { get; set; }
+        public DbSet<StudentCourse> StudentCourse { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<LecturerCourse>();
-            modelBuilder.Entity<StudentCourse>();
-
+            //modelBuilder.Entity<LecturerCourse>();
+            //modelBuilder.Entity<StudentCourse>();
             modelBuilder.ApplyConfiguration(new CoursesConfiguration());
             modelBuilder.ApplyConfiguration(new LecturerConfiguration());
             modelBuilder.ApplyConfiguration(new StudentConfiguration());
@@ -85,6 +89,12 @@ namespace DataAccess.EF
         public void Configure(EntityTypeBuilder<Course> builder)
         {
             builder.Property(c => c.Name).IsRequired().HasMaxLength(50);
+            builder.Property(c => c.StartDate).IsRequired().HasColumnType("date");
+            builder.Property(c => c.EndDate).IsRequired().HasColumnType("date");
+
+            builder.Ignore(c => c.Lecturers);
+            builder.Ignore(c => c.Students);
+            builder.Ignore(c => c.HomeTasks);
         }
     }
 
@@ -93,7 +103,9 @@ namespace DataAccess.EF
         public void Configure(EntityTypeBuilder<Lecturer> builder)
         {
             builder.Property(l => l.Name).IsRequired().HasMaxLength(50);
-            //builder.Property(l => l.BirthDate).IsRequired().HasColumnType("date");
+            builder.Property(l => l.BirthDate).IsRequired().HasColumnType("date");
+
+            builder.Ignore(c => c.Courses);
         }
     }
 
@@ -102,10 +114,14 @@ namespace DataAccess.EF
         public void Configure(EntityTypeBuilder<Student> builder)
         {
             builder.Property(s => s.Name).IsRequired().HasMaxLength(50);
+            builder.Property(s => s.BirthDate).IsRequired().HasColumnType("date");
             builder.Property(s => s.PhoneNumber).IsRequired().HasMaxLength(12);
             builder.Property(s => s.Email).IsRequired().HasMaxLength(50);
             builder.Property(s => s.GitHubLink).IsRequired().HasMaxLength(256);
             builder.Property(s => s.Notes).IsRequired().HasColumnType("text");
+
+            builder.Ignore(c => c.Courses);
+            builder.Ignore(c => c.HomeTaskAssessments);
         }
     }
 
@@ -114,11 +130,14 @@ namespace DataAccess.EF
         public void Configure(EntityTypeBuilder<HomeTask> builder)
         {
             builder.Property(h => h.Title).IsRequired().HasMaxLength(50);
-            //builder.Property(h => h.Date).IsRequired().HasColumnType("date");
+            builder.Property(h => h.Date).IsRequired().HasColumnType("date");
 
-            builder.HasOne(h => h.Course)
-                   .WithMany(c => c.HomeTasks)
-                   .HasForeignKey(h => h.CourseId);
+            builder.Ignore(c => c.Course);
+            builder.Ignore(c => c.HomeTaskAssessments);
+
+            //builder.HasOne(h => h.Course)
+            //       .WithMany(c => c.HomeTasks)
+            //       .HasForeignKey(h => h.CourseId);
         }
     }
 
@@ -126,15 +145,18 @@ namespace DataAccess.EF
     {
         public void Configure(EntityTypeBuilder<HomeTaskAssessment> builder)
         {
-            //builder.Property(a => a.Date).IsRequired().HasColumnType("date");
+            builder.Property(a => a.Date).IsRequired().HasColumnType("date");
 
-            builder.HasOne(a => a.Student)
-                   .WithMany(s => s.HomeTaskAssessments)
-                   .HasForeignKey(a => a.StudentId);
+            //builder.HasOne(a => a.Student)
+            //       .WithMany(s => s.HomeTaskAssessments)
+            //       .HasForeignKey(a => a.StudentId);
 
-            builder.HasOne(a => a.HomeTask)
-                   .WithMany(h => h.HomeTaskAssessments)
-                   .HasForeignKey(a => a.HomeTaskId);
+            //builder.HasOne(a => a.HomeTask)
+            //       .WithMany(h => h.HomeTaskAssessments)
+            //       .HasForeignKey(a => a.HomeTaskId);
+
+            builder.Ignore(c => c.HomeTask);
+            builder.Ignore(c => c.Student);
         }
     }
 
@@ -142,17 +164,17 @@ namespace DataAccess.EF
     {
         public void Configure(EntityTypeBuilder<LecturerCourse> builder)
         {
-            builder.HasKey(t => new { t.LecturerId, t.CourseId });
+            //builder.HasKey(t => new { t.LecturerId, t.CourseId });
 
-            builder.HasOne(lc => lc.Lecturer)
-                   .WithMany(l => l.LecturerCourses)
-                   .HasForeignKey(lc => lc.LecturerId)
-                   .OnDelete(DeleteBehavior.Restrict);
+            //builder.HasOne(lc => lc.Lecturer)
+            //       .WithMany(l => l.LecturerCourses)
+            //       .HasForeignKey(lc => lc.LecturerId)
+            //       .OnDelete(DeleteBehavior.Restrict);
 
-            builder.HasOne(lc => lc.Course)
-                   .WithMany(c => c.LecturerCourses)
-                   .HasForeignKey(lc => lc.CourseId)
-                   .OnDelete(DeleteBehavior.Restrict);
+            //builder.HasOne(lc => lc.Course)
+            //       .WithMany(c => c.LecturerCourses)
+            //       .HasForeignKey(lc => lc.CourseId)
+            //       .OnDelete(DeleteBehavior.Restrict);
         }
     }
 
@@ -160,15 +182,15 @@ namespace DataAccess.EF
     {
         public void Configure(EntityTypeBuilder<StudentCourse> builder)
         {
-            builder.HasKey(t => new { t.StudentId, t.CourseId });
+            //builder.HasKey(t => new { t.StudentId, t.CourseId });
 
-            builder.HasOne(sc => sc.Student)
-                   .WithMany(s => s.StudentCourses)
-                   .HasForeignKey(sc => sc.StudentId);
+            //builder.HasOne(sc => sc.Student)
+            //       .WithMany(s => s.StudentCourses)
+            //       .HasForeignKey(sc => sc.StudentId);
 
-            builder.HasOne(sc => sc.Course)
-                   .WithMany(c => c.StudentCourses)
-                   .HasForeignKey(sc => sc.CourseId);
+            //builder.HasOne(sc => sc.Course)
+            //       .WithMany(c => c.StudentCourses)
+            //       .HasForeignKey(sc => sc.CourseId);
         }
     }
 }

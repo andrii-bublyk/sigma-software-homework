@@ -32,6 +32,10 @@ namespace Academy
             services.AddScoped<AcademyRepository, AcademyRepository>();
 
             services.AddScoped<CourseService, CourseService>();
+            services.AddScoped<LecturerService, LecturerService>();
+            services.AddScoped<StudentService, StudentService>();
+            services.AddScoped<HometaskService, HometaskService>();
+            services.AddScoped<HomeTaskAssessmentService, HomeTaskAssessmentService>();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
