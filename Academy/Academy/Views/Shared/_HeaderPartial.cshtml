@@ -1,9 +1,29 @@
 ﻿
-<a href="/Course/Courses">Courses</a> &nbsp; | &nbsp;
-<a href="/Student/Students">Students</a> &nbsp; | &nbsp;
-<a href="/Lecturer/Lecturers">Lecturers</a>
+<div class="dropdown">
+    <a href="/Course/Courses">All courses</a>
+    <div class="dropdown-content">
+        <a href="/Course/Create">Create course</a>
+    </div>
+</div>
 
-<div>
+&nbsp; | &nbsp;
+
+<div class="dropdown">
+    <a href="/Student/Students">All students</a>
+    <div class="dropdown-content">
+        <a href="/Student/Create">Create student</a>
+    </div>
+</div>
+
+&nbsp; | &nbsp;
+<div class="dropdown">
+    <a href="/Lecturer/Lecturers">All lecturers</a>
+    <div class="dropdown-content">
+        <a href="/Lecturer/Create">Create lecturer</a>
+    </div>
+</div>
+
+<div class="topcorner">
     @if (!User.Identity.IsAuthenticated)
     {
         <a href="/Account/Login">Login</a>
@@ -11,11 +31,11 @@
     }
     else
     {
+        <span style="font-weight: bold" >Hello, @User.Identity.Name &nbsp;</span>
         <a href="/Account/Logout">Logout</a>
         if (User.IsInRole("admin"))
         {
-            <p>you are admin</p>
+        <span>&nbsp;(you are admin)</span>
         }
-        <p>Hello, @User.Identity.Name</p>
     }
 </div>

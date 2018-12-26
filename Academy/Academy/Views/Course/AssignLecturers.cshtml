@@ -1,0 +1,34 @@
+﻿
+@{
+    ViewData["Title"] = "AssignLecturers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Academy.ViewModels.CourseLecturersAssignmentViewModel
+
+<form method="post" action="~/Course/AssignLecturers">
+    <h2>Assign lectuters to course @Model.Course.Name</h2>
+    @Html.HiddenFor(m => Model.Course.Id)
+    <table>
+        <thead>
+            <tr>
+                <th>Lecturer name</th>
+                <th>Assigned</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.LecturersAssignmentsList.Count; i++)
+            {
+                <tr>
+                    <td>@Model.LecturersAssignmentsList[i].Lecturer.Name</td>
+                    <td>
+                        @Html.CheckBoxFor(m => Model.LecturersAssignmentsList[i].IsAssigned)
+                    </td>
+                    @Html.HiddenFor(m => Model.LecturersAssignmentsList[i].Lecturer.Id)
+                </tr>
+            }
+        </tbody>
+    </table>
+    <input type="submit" value="Save" />
+</form>
+
+<a href="/Course/Courses">Back to courses list</a>

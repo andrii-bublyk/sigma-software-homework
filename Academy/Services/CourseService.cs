@@ -50,5 +50,10 @@ namespace Services
         {
             academyRepository.AssignStudentsToCourse(courseId, studentsIds);
         }
+
+        public void AssignLecturersToCourse(int courseId, List<int> lecturersIds)
+        {
+            academyRepository.AssignLecturersToCourse(courseId, lecturersIds);
+        }
     }
 }

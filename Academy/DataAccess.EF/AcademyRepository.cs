@@ -42,8 +42,20 @@ namespace DataAccess.EF
                         courseStudents.Add(student);
                     }
                 }
-
                 course.Students = courseStudents;
+
+                var lecturersIds = academyDb.LecturerCourse.Where(lc => lc.CourseId == course.Id).Select(lc => lc.LecturerId);
+                List<Lecturer> courseLectors = new List<Lecturer>();
+                foreach (var lecturerId in lecturersIds)
+                {
+                    Lecturer lecturer = academyDb.Lecturer.FirstOrDefault(l => l.Id == lecturerId);
+                    if (lecturer != null)
+                    {
+                        courseLectors.Add(lecturer);
+                    }
+                }
+                course.Lecturers = courseLectors;
+
                 return course;
             }
         }
@@ -100,6 +112,26 @@ namespace DataAccess.EF
                 foreach (var stId in studentsIds)
                 {
                     academyDb.StudentCourse.Add(new StudentCourse() { StudentId = stId, CourseId = courseId });
+                }
+
+                academyDb.SaveChanges();
+            }
+        }
+
+        public void AssignLecturersToCourse(int courseId, List<int> lecturersIds)
+        {
+            using (AcademyContext academyDb = new AcademyContext(options))
+            {
+                // get all course notations
+                var lectCour = academyDb.LecturerCourse.Where(lc => lc.CourseId == courseId);
+                foreach (var lc in lectCour)
+                {
+                    academyDb.LecturerCourse.Remove(lc);
+                }
+
+                foreach (var lcId in lecturersIds)
+                {
+                    academyDb.LecturerCourse.Add(new LecturerCourse() { LecturerId = lcId, CourseId = courseId });
                 }
 
                 academyDb.SaveChanges();

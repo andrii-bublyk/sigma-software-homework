@@ -62,7 +62,7 @@ namespace Academy.Controllers
 
             Course course = courseService.GetCourse(homeTask.CourseId);
 
-            // TODO add auto creating hometaskassessments
+            // TODO move here auto creating hometaskassessments
 
             return RedirectToAction("CourseHometasks", new { courseId = homeTask.CourseId });
         }

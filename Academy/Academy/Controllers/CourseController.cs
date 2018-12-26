@@ -15,13 +15,15 @@ namespace Academy.Controllers
         private readonly StudentService studentService;
         private readonly HometaskService hometaskService;
         private readonly HomeTaskAssessmentService homeTaskAssessmentService;
+        private readonly LecturerService lecturerService;
 
-        public CourseController(CourseService courseService, StudentService studentService, HometaskService hometaskService, HomeTaskAssessmentService homeTaskAssessmentService)
+        public CourseController(CourseService courseService, StudentService studentService, HometaskService hometaskService,
+            HomeTaskAssessmentService homeTaskAssessmentService, LecturerService lecturerService)
         {
             this.courseService = courseService;
             this.studentService = studentService;
             this.hometaskService = hometaskService;
-            this.homeTaskAssessmentService = homeTaskAssessmentService;
+            this.lecturerService = lecturerService;
         }
 
         [HttpGet]
@@ -113,30 +115,30 @@ namespace Academy.Controllers
             return RedirectToAction("Courses");
         }
 
-        //[HttpGet]
-        //public IActionResult AssignLecturers(int id)
-        //{
-        //    Course course = repository.GetCourse(id);
-        //    List<Lecturer> allLecturers = repository.GetAllLecturers();
+        [HttpGet]
+        public IActionResult AssignLecturers(int id)
+        {
+            Course course = courseService.GetCourse(id);
+            List<Lecturer> allLecturers = lecturerService.GetAllLecturers();
 
-        //    CourseLecturersAssignmentViewModel model = new CourseLecturersAssignmentViewModel();
-        //    model.Course = course;
-        //    model.LecturersList = new List<LecturerAssignment>();
-        //    foreach (var lecturer in allLecturers)
-        //    {
-        //        bool isAssigned = course.Lecturers.Any(c => c.Id == lecturer.Id);
-        //        model.LecturersList.Add(new LecturerAssignment() { Lecturer = lecturer, IsAssigned = isAssigned });
-        //    }
+            CourseLecturersAssignmentViewModel model = new CourseLecturersAssignmentViewModel();
+            model.Course = course;
+            model.LecturersAssignmentsList = new List<LecturerAssignment>();
+            foreach (var lecturer in allLecturers)
+            {
+                bool isAssigned = course.Lecturers.Any(c => c.Id == lecturer.Id);
+                model.LecturersAssignmentsList.Add(new LecturerAssignment() { Lecturer = lecturer, IsAssigned = isAssigned });
+            }
 
-        //    return View(model);
-        //}
+            return View(model);
+        }
 
-        //[HttpPost]
-        //public IActionResult AssignLecturers(CourseLecturersAssignmentViewModel model)
-        //{
-        //    var assignedLecturersId = model.LecturersList.Where(a => a.IsAssigned).Select(l => l.Lecturer.Id);
-        //    repository.SetLecturersToCourse(model.Course.Id, assignedLecturersId);
-        //    return RedirectToAction("Courses");
-        //}
+        [HttpPost]
+        public IActionResult AssignLecturers(CourseLecturersAssignmentViewModel model)
+        {
+            var assignedLecturersId = model.LecturersAssignmentsList.Where(a => a.IsAssigned).Select(l => l.Lecturer.Id).ToList();
+            courseService.AssignLecturersToCourse(model.Course.Id, assignedLecturersId);
+            return RedirectToAction("Courses");
+        }
     }
 }
