@@ -23,6 +23,7 @@ namespace Academy.Controllers
             this.courseService = courseService;
             this.studentService = studentService;
             this.hometaskService = hometaskService;
+            this.homeTaskAssessmentService = homeTaskAssessmentService;
             this.lecturerService = lecturerService;
         }
 
@@ -92,25 +93,6 @@ namespace Academy.Controllers
         {
             var assignedStudentsId = model.StudentsAssignmentsList.Where(al => al.IsAssigned).Select(s => s.Student.Id).ToList();
             courseService.AssignStudentsToCourse(model.Course.Id, assignedStudentsId);
-
-            // auto creating marks
-            var courseHometasksIds = hometaskService.GetAllHomeTasks().Where(h => h.CourseId == model.Course.Id).Select(h => h.Id);
-            foreach (var studentId in assignedStudentsId)
-            {
-                var studentHometaskIds = studentService.GetStudent(studentId).HomeTaskAssessments.Select(a => a.HomeTaskId);
-                var missingHometasksId = courseHometasksIds.Except(studentHometaskIds);
-                foreach (var hometaskId in missingHometasksId)
-                {
-                    HomeTaskAssessment assessment = new HomeTaskAssessment()
-                    {
-                        IsComplete = false,
-                        Date = DateTime.Now,
-                        HomeTaskId = hometaskId,
-                        StudentId = studentId
-                    };
-                    homeTaskAssessmentService.CreateHomeTaskAssessment(assessment);
-                }
-            }
 
             return RedirectToAction("Courses");
         }

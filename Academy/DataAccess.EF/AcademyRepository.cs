@@ -83,8 +83,40 @@ namespace DataAccess.EF
         {
             using (AcademyContext academyDb = new AcademyContext(options))
             {
-                academyDb.Course.Remove(course);
-                academyDb.SaveChanges();
+                using (var transaction = academyDb.Database.BeginTransaction())
+                {
+                    // delete course from lecturer-courcse table
+                    var lectureCoursesForDelete = academyDb.LecturerCourse.Where(lc => lc.CourseId == course.Id);
+                    foreach (var lcd in lectureCoursesForDelete)
+                    {
+                        academyDb.LecturerCourse.Remove(lcd);
+                    }
+
+                    // delete course from student-courcse table
+                    var studentCoursesForDelete = academyDb.StudentCourse.Where(sc => sc.CourseId == course.Id);
+                    foreach (var sc in studentCoursesForDelete)
+                    {
+                        academyDb.StudentCourse.Remove(sc);
+                    }
+
+                    // delete assessment from HomeTaskAssessment table
+                    // delete hometasks from Hometask table
+                    var hometasksForDelete = academyDb.HomeTask.Where(h => h.CourseId == course.Id);
+                    foreach (var hd in hometasksForDelete)
+                    {
+                        var assessmentsForDelete = academyDb.HomeTaskAssessment.Where(ha => ha.HomeTaskId == hd.Id);
+                        foreach (var ad in assessmentsForDelete)
+                        {
+                            academyDb.HomeTaskAssessment.Remove(ad);
+                        }
+                        academyDb.HomeTask.Remove(hd);
+                    }
+                    // delete course
+                    academyDb.Course.Remove(course);
+                    academyDb.SaveChanges();
+
+                    transaction.Commit();
+                }
             }
         }
 
@@ -98,23 +130,58 @@ namespace DataAccess.EF
             }
         }
 
-        public void AssignStudentsToCourse(int courseId, List<int> studentsIds)
+        public void AssignStudentsToCourse(int courseId, List<int> assignedStudentsIds)
         {
             using (AcademyContext academyDb = new AcademyContext(options))
             {
-                // get all course notations
-                var studCour = academyDb.StudentCourse.Where(sc => sc.CourseId == courseId);
-                foreach (var sc in studCour)
+                using (var transaction = academyDb.Database.BeginTransaction())
                 {
-                    academyDb.StudentCourse.Remove(sc);
-                }
+                    List<int> previouslyAssignedstudentsIds = academyDb.StudentCourse.Where(sc => sc.CourseId == courseId).Select(sc => sc.StudentId).ToList();
+                    List<int> disassignedStudentsIds = previouslyAssignedstudentsIds.Except(assignedStudentsIds).ToList();
+                    List<int> newAssignedStudentsIds = assignedStudentsIds.Except(previouslyAssignedstudentsIds).ToList();
 
-                foreach (var stId in studentsIds)
-                {
-                    academyDb.StudentCourse.Add(new StudentCourse() { StudentId = stId, CourseId = courseId });
-                }
+                    // delete disassigned students assessments
+                    foreach (var disStId in disassignedStudentsIds)
+                    {
+                        // todo remove range not necessary
+                        academyDb.HomeTaskAssessment.RemoveRange(
+                            academyDb.HomeTaskAssessment.Where(ha => ha.StudentId == disStId));
+                    }
 
-                academyDb.SaveChanges();
+                    // disassigne disassigned students
+                    foreach (var disStId in disassignedStudentsIds)
+                    {
+                        // todo remove range not necessary
+                        academyDb.StudentCourse.RemoveRange(
+                            academyDb.StudentCourse.Where(sc => sc.StudentId == disStId));
+                    }
+
+                    // assign new assigned students
+                    foreach (var asi in newAssignedStudentsIds)
+                    {
+                        academyDb.StudentCourse.Add(new StudentCourse() { StudentId = asi, CourseId = courseId });
+                    }
+
+                    // create assessments for new assigned students
+                    List<int> courseHometasksIds = academyDb.HomeTask.Where(h => h.CourseId == courseId).Select(h => h.Id).ToList();
+                    foreach (var studentId in newAssignedStudentsIds)
+                    {
+                        foreach (var hometaskId in courseHometasksIds)
+                        {
+                            HomeTaskAssessment assessment = new HomeTaskAssessment()
+                            {
+                                IsComplete = false,
+                                Date = DateTime.Now,
+                                HomeTaskId = hometaskId,
+                                StudentId = studentId
+                            };
+                            academyDb.HomeTaskAssessment.Add(assessment);
+                        }
+                    }
+                    academyDb.SaveChanges();
+
+                    transaction.Commit();
+                }
             }
         }
 
@@ -177,8 +244,20 @@ namespace DataAccess.EF
         {
             using (AcademyContext academyDb = new AcademyContext(options))
             {
-                academyDb.Lecturer.Remove(lecturer);
-                academyDb.SaveChanges();
+                using (var transaction = academyDb.Database.BeginTransaction())
+                {
+                    // delete course from lecturer-courcse table
+                    var lectureCoursesForDelete = academyDb.LecturerCourse.Where(lc => lc.LecturerId == lecturer.Id);
+                    foreach (var lc in lectureCoursesForDelete)
+                    {
+                        academyDb.LecturerCourse.Remove(lc);
+                    }
+                    // delete lecturer
+                    academyDb.Lecturer.Remove(lecturer);
+                    academyDb.SaveChanges();
+
+                    transaction.Commit();
+                }
             }
         }
 
@@ -235,8 +314,27 @@ namespace DataAccess.EF
         {
             using (AcademyContext academyDb = new AcademyContext(options))
             {
-                academyDb.Student.Remove(student);
-                academyDb.SaveChanges();
+                using (var transaction = academyDb.Database.BeginTransaction())
+                {
+                    // delete student assesments
+                    var studentAssessmentsForDelete = academyDb.HomeTaskAssessment.Where(a => a.StudentId == student.Id);
+                    foreach (var sa in studentAssessmentsForDelete)
+                    {
+                        academyDb.HomeTaskAssessment.Remove(sa);
+                    }
+                    // delete student from student-courcse table
+                    var studentCoursesForDelete = academyDb.StudentCourse.Where(sc => sc.StudentId == student.Id);
+                    foreach (var sc in studentCoursesForDelete)
+                    {
+                        academyDb.StudentCourse.Remove(sc);
+                    }
+
+                    // delete student
+                    academyDb.Student.Remove(student);
+                    academyDb.SaveChanges();
+
+                    transaction.Commit();
+                }
             }
         }
 
@@ -269,18 +367,39 @@ namespace DataAccess.EF
 
         public void CreateHomeTask(HomeTask homeTask)
         {
+            // create hometask
             using (AcademyContext academyDb = new AcademyContext(options))
             {
-                //using (var transaction = academyDb.Database.BeginTransaction())
-                //{
-                //    academyDb.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Course] ON");
-                //    academyDb.HomeTask.Add(homeTask);
-                //    academyDb.SaveChanges();
-                //    academyDb.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Course] OFF");
-                //    transaction.Commit();
-                //}
                 academyDb.HomeTask.Add(homeTask);
                 academyDb.SaveChanges();
+            }
+
+            using (AcademyContext academyDb = new AcademyContext(options))
+            {
+                if (academyDb.StudentCourse.Where(sc => sc.CourseId == homeTask.CourseId).Count() > 0)
+                {
+                    // create assessments for all students in course without assessments
+                    List<int> courseHometasksIds = academyDb.HomeTask.Where(h => h.CourseId == homeTask.CourseId).Select(h => h.Id).ToList();
+                    List<int> courseStudentsIds = academyDb.StudentCourse.Where(st => st.CourseId == homeTask.CourseId).Select(st => st.StudentId).ToList();
+                    foreach (var hi in courseHometasksIds)
+                    {
+                        if (academyDb.HomeTaskAssessment.Where(ha => ha.HomeTaskId == hi).Count() == 0)
+                        {
+                            foreach (var csi in courseStudentsIds)
+                            {
+                                academyDb.HomeTaskAssessment.Add(
+                                    new HomeTaskAssessment()
+                                    {
+                                        IsComplete = false,
+                                        Date = DateTime.Now,
+                                        HomeTaskId = homeTask.Id,
+                                        StudentId = csi
+                                    });
+                            }
+                        }
+                    }
+                    academyDb.SaveChanges();
+                }
             }
         }
 
@@ -297,8 +416,21 @@ namespace DataAccess.EF
         {
             using (AcademyContext academyDb = new AcademyContext(options))
             {
-                academyDb.HomeTask.Remove(homeTask);
-                academyDb.SaveChanges();
+                using (var transaction = academyDb.Database.BeginTransaction())
+                {
+                    // delete hometask assessments
+                    var hometaskAssessmentsForDelete = academyDb.HomeTaskAssessment.Where(a => a.HomeTaskId == homeTask.Id);
+                    foreach (var ha in hometaskAssessmentsForDelete)
+                    {
+                        academyDb.HomeTaskAssessment.Remove(ha);
+                    }
+
+                    // delete hometask
+                    academyDb.HomeTask.Remove(homeTask);
+                    academyDb.SaveChanges();
+
+                    transaction.Commit();
+                }
             }
         }
 
@@ -375,6 +507,7 @@ namespace DataAccess.EF
                 foreach (var assessment in studentAssessments)
                 {
                     assessment.HomeTask = academyDb.HomeTask.FirstOrDefault(h => h.Id == assessment.HomeTaskId);
+                    assessment.HomeTask.Course = academyDb.Course.FirstOrDefault(c => c.Id == assessment.HomeTask.CourseId);
                 }
 
                 return studentAssessments;

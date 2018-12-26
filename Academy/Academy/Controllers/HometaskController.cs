@@ -60,10 +60,6 @@ namespace Academy.Controllers
         {
             hometaskService.CreateHomeTask(homeTask);
 
-            Course course = courseService.GetCourse(homeTask.CourseId);
-
-            // TODO move here auto creating hometaskassessments
-
             return RedirectToAction("CourseHometasks", new { courseId = homeTask.CourseId });
         }
 

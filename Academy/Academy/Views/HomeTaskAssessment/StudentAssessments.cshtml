@@ -10,6 +10,9 @@
     <thead>
         <tr>
             <th>
+                Couse name
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.HomeTask.Title)
             </th>
             <th>
@@ -27,6 +30,9 @@
         @foreach (var assessment in Model)
         {
             <tr>
+                <td>
+                    @assessment.HomeTask.Course.Name
+                </td>
                 <td>
                     @assessment.HomeTask.Title
                 </td>
