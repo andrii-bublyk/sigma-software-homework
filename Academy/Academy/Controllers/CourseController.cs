@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Academy.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.AcademyModels;
 using Services;
@@ -35,12 +36,14 @@ namespace Academy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult Create(Course newCourse)
         {
             courseService.CreateCourse(newCourse);
@@ -48,6 +51,18 @@ namespace Academy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
+        public IActionResult Info(int id)
+        {
+            Course course = courseService.GetCourse(id);
+            if (course == null)
+                return NotFound();
+
+            return View(course);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Edit(int id)
         {
             Course course = courseService.GetCourse(id);
@@ -57,6 +72,7 @@ namespace Academy.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult Edit(Course course)
         {
             courseService.UpdateCourse(course);
@@ -64,6 +80,7 @@ namespace Academy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Delete(int id)
         {
             courseService.DeleteCourse(id);
@@ -71,6 +88,7 @@ namespace Academy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult AssignStudents(int id)
         {
             Course course = courseService.GetCourse(id);
@@ -89,6 +107,7 @@ namespace Academy.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult AssignStudents(CourseStudentsAssignmentViewModel model)
         {
             var assignedStudentsId = model.StudentsAssignmentsList.Where(al => al.IsAssigned).Select(s => s.Student.Id).ToList();
@@ -98,6 +117,7 @@ namespace Academy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult AssignLecturers(int id)
         {
             Course course = courseService.GetCourse(id);
@@ -116,6 +136,7 @@ namespace Academy.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult AssignLecturers(CourseLecturersAssignmentViewModel model)
         {
             var assignedLecturersId = model.LecturersAssignmentsList.Where(a => a.IsAssigned).Select(l => l.Lecturer.Id).ToList();

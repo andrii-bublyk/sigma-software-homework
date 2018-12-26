@@ -1,0 +1,150 @@
+﻿
+@{
+    ViewData["Title"] = "Info";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Models.AcademyModels.Course
+
+<a href="/Course/Courses">Back to courses list</a>
+
+<h3>Course "@Model.Name" Info</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Students number
+            </th>
+            <th>
+                Hometasks number
+            </th>
+            <th>
+                Start date
+            </th>
+            <th>
+                End date
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Model.Students.Count
+            </td>
+            <td>
+                @Model.HomeTasks.Count
+            </td>
+            <td>
+                @Model.StartDate
+            </td>
+            <td>
+                @Model.EndDate
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>Lectors:</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Birthday
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var lecturer in Model.Lecturers)
+        {
+            <tr>
+                <td>
+                    @lecturer.Name
+                </td>
+                <td>
+                    @lecturer.BirthDate
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4>Students:</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                PhoneNumber
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                GitHubLink
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model.Students)
+        {
+            <tr>
+                <td>
+                    @student.Name
+                </td>
+                <td>
+                    @student.PhoneNumber
+                </td>
+                <td>
+                    @student.Email
+                </td>
+                <td>
+                    @student.GitHubLink
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<h4>Hometasks:</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Number
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Description
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var homeTask in Model.HomeTasks)
+        {
+            <tr>
+                <td>
+                    @homeTask.Number
+                </td>
+                <td>
+                    @homeTask.Title
+                </td>
+                <td>
+                    @homeTask.Date
+                </td>
+                <td>
+                    @homeTask.Description
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

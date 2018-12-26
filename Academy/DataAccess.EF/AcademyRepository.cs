@@ -55,6 +55,8 @@ namespace DataAccess.EF
                     }
                 }
                 course.Lecturers = courseLectors;
+                
+                course.HomeTasks = academyDb.HomeTask.Where(h => h.CourseId == course.Id).ToList();
 
                 return course;
             }
@@ -286,7 +288,24 @@ namespace DataAccess.EF
             {
                 Student student = academyDb.Student.FirstOrDefault(s => s.Id == id);
                 List<HomeTaskAssessment> studentAssessments = academyDb.HomeTaskAssessment.Where(a => a.StudentId == student.Id).ToList();
+                foreach (var assessment in studentAssessments)
+                {
+                    assessment.HomeTask = academyDb.HomeTask.FirstOrDefault(h => h.Id == assessment.HomeTaskId);
+                }
+
                 student.HomeTaskAssessments = studentAssessments;
+
+                List<int> studentCoursesIds = academyDb.StudentCourse.Where(sc => sc.StudentId == student.Id).Select(sc => sc.CourseId).ToList();
+                List<Course> studentCourses = new List<Course>();
+                foreach(var ci in studentCoursesIds)
+                {
+                    Course course = academyDb.Course.FirstOrDefault(c => c.Id == ci);
+                    if (course != null)
+                    {
+                        studentCourses.Add(course);
+                    }
+                }
+                student.Courses = studentCourses;
 
                 return student;
             }

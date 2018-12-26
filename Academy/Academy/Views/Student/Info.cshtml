@@ -1,0 +1,96 @@
+﻿
+@{
+    ViewData["Title"] = "Info";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model Models.AcademyModels.Student
+
+<a href="/Student/Students">Back to students list</a>
+
+<h3>Student "@Model.Name" Info</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Birthday
+            </th>
+            <th>
+                Phone number
+            </th>
+            <th>
+                Email
+            </th>
+            <th>
+                GitHub link
+            </th>
+            <th>
+                Notes
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Model.Name
+            </td>
+            <td>
+                @Model.BirthDate
+            </td>
+            <td>
+                @Model.PhoneNumber
+            </td>
+            <td>
+                @Model.Email
+            </td>
+            <td>
+                @Model.GitHubLink
+            </td>
+            <td>
+                @Model.Notes
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>Hometasks:</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Course
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Is completed
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var assessment in Model.HomeTaskAssessments)
+        {
+            <tr>
+                <td>
+                    @{
+                        Course course = Model.Courses.FirstOrDefault(c => c.Id == assessment.HomeTask.CourseId);
+                        if (course != null)
+                        {
+                            <span>@course.Name</span>
+                        }
+                    }
+                </td>
+                <td>
+                    @assessment.HomeTask.Title
+                </td>
+                <td>
+                    @assessment.IsComplete
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.AcademyModels;
 using Services;
@@ -20,6 +21,7 @@ namespace Academy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult CourseHometasks(int courseId)
         {
             Course course = courseService.GetCourse(courseId);
@@ -48,6 +50,7 @@ namespace Academy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Create(int courseId)
         {
             ViewData["courseId"] = courseId;
@@ -56,6 +59,7 @@ namespace Academy.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult Create(HomeTask homeTask)
         {
             hometaskService.CreateHomeTask(homeTask);
@@ -64,6 +68,7 @@ namespace Academy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Edit([FromRoute]int id)
         {
             HomeTask homeTask = hometaskService.GetHomeTask(id);
@@ -75,12 +80,15 @@ namespace Academy.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult Edit(HomeTask homeTask)
         {
             hometaskService.UpdateHomeTask(homeTask);
             return RedirectToAction("CourseHometasks", new { courseId = homeTask.CourseId });
         }
 
+        [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Delete(int id)
         {
             HomeTask homeTask = hometaskService.GetHomeTask(id);
