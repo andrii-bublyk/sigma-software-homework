@@ -9,13 +9,21 @@ namespace Services
     {
         private readonly AcademyRepository academyRepository;
 
+        public CourseService()
+        {
+        }
+
         public CourseService(AcademyRepository academyRepository)
         {
             this.academyRepository = academyRepository;
         }
 
-        public List<Course> GetAllCourses()
+        public virtual List<Course> GetAllCourses()
         {
+            if (academyRepository == null)
+            {
+                return new List<Course>();
+            }
             List<Course> coursesList = academyRepository.GetAllCourses();
             return coursesList;
         }
