@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Models.AcademyModels;
+using Models.AuthorizationModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -530,6 +531,38 @@ namespace DataAccess.EF
                 }
 
                 return studentAssessments;
+            }
+        }
+
+        // User table
+        public User GetUser(User user)
+        {
+            using (AcademyContext academyDb = new AcademyContext(options))
+            {
+                return academyDb.User
+                    .Include(u => u.Role)
+                    .FirstOrDefault(u => u.Email == user.Email && u.Password == user.Password);
+            }
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            using (AcademyContext academyDb = new AcademyContext(options))
+            {
+                return academyDb.User.FirstOrDefault(u => u.Email == email);
+            }
+        }
+
+        public void CreateUser(User user)
+        {
+            using (AcademyContext academyDb = new AcademyContext(options))
+            {
+                Role userRole = academyDb.Role.FirstOrDefault(r => r.Name == "user");
+                if (userRole != null)
+                    user.Role = userRole;
+
+                academyDb.User.Add(user);
+                academyDb.SaveChanges();
             }
         }
     }

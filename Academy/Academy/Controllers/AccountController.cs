@@ -9,16 +9,17 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Models.AuthorizationModels;
+using Services;
 
 namespace Academy.Controllers
 {
     public class AccountController : Controller
     {
-        private AcademyContext _context;
+        private readonly AccountService accountService;
 
-        public AccountController(AcademyContext context)
+        public AccountController(AccountService accountService)
         {
-            _context = context;
+            this.accountService = accountService;
         }
 
         [HttpGet]
@@ -33,18 +34,13 @@ namespace Academy.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _context.User.FirstOrDefaultAsync(u => u.Email == model.Email);
+
+                User user = accountService.GetUserByEmail(model.Email);
                 if (user == null)
                 {
                     // add new user to db
                     user = new User { Email = model.Email, Password = model.Password };
-                    Role userRole = await _context.Role.FirstOrDefaultAsync(r => r.Name == "user");
-                    if (userRole != null)
-                        user.Role = userRole;
-
-                    _context.User.Add(user);
-                    await _context.SaveChangesAsync();
-
+                    accountService.CreateUser(user);
                     await Authenticate(user);
 
                     return RedirectToAction("Index", "Home");
@@ -67,9 +63,7 @@ namespace Academy.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await _context.User
-                    .Include(u => u.Role)
-                    .FirstOrDefaultAsync(u => u.Email == model.Email && u.Password == model.Password);
+                User user = accountService.GetUser(new User() { Email = model.Email, Password = model.Password });
                 if (user != null)
                 {
                     await Authenticate(user);

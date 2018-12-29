@@ -28,9 +28,10 @@ namespace Academy
             services.AddMvc();
 
             services.Configure<RepositoryOptions>(Configuration);
-            services.AddScoped<AcademyContext, AcademyContext>();  // todo remove
+            //services.AddScoped<AcademyContext, AcademyContext>();
             services.AddScoped<AcademyRepository, AcademyRepository>();
 
+            services.AddScoped<AccountService, AccountService>();
             services.AddScoped<CourseService, CourseService>();
             services.AddScoped<LecturerService, LecturerService>();
             services.AddScoped<StudentService, StudentService>();
