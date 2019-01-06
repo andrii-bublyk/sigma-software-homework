@@ -10,41 +10,82 @@ namespace Services
     {
         private readonly AcademyRepository academyRepository;
 
+        public StudentService()
+        {
+        }
+
         public StudentService(AcademyRepository academyRepository)
         {
             this.academyRepository = academyRepository;
         }
 
-        public List<Student> GetAllStudents()
+        public virtual List<Student> GetAllStudents()
         {
+            if (academyRepository == null)
+            {
+                return new List<Student>();
+            }
             List<Student> studentsList = academyRepository.GetAllStudents();
             return studentsList;
         }
 
-        public Student GetStudent(int id)
+        public virtual Student GetStudent(int id)
         {
+            if (academyRepository == null)
+            {
+                return null;
+            }
             Student student = academyRepository.GetStudent(id);
             return student;
         }
 
-        public void CreateStudent(Student student)
+        public virtual bool CreateStudent(Student student)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.CreateStudent(student);
+            return true;
         }
 
-        public void UpdateStudent(Student student)
+        public virtual bool UpdateStudent(Student student)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.UpdateStudent(student);
+            return true;
         }
 
-        public void DeleteStudent(Student student)
+        public virtual bool DeleteStudent(Student student)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.DeleteStudent(student);
+            return true;
         }
 
-        public void DeleteStudent(int id)
+        public virtual bool DeleteStudent(int id)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.DeleteStudent(id);
+            return true;
+        }
+
+        public virtual bool IsStudentExisted(Student student)
+        {
+            Student dbStudent = GetStudent(student.Id);
+            if (dbStudent == null)
+                return false;
+
+            return dbStudent.Equals(student);
         }
     }
 }

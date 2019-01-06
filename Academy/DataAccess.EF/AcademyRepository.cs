@@ -133,7 +133,7 @@ namespace DataAccess.EF
             }
         }
 
-        public void AssignStudentsToCourse(int courseId, List<int> assignedStudentsIds)
+        public void AssignStudentsToCourse(int courseId, IEnumerable<int> assignedStudentsIds)
         {
             using (AcademyContext academyDb = new AcademyContext(options))
             {

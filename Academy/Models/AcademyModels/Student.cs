@@ -23,5 +23,31 @@ namespace Models.AcademyModels
             Courses = new List<Course>();
             HomeTaskAssessments = new List<HomeTaskAssessment>();
         }
+
+        public override bool Equals(object obj)
+        {
+            Student other = obj as Student;
+            if (other == null)
+                return false;
+
+            return (Id == other.Id
+                && Name == other.Name
+                && DateTime.Compare(BirthDate, other.BirthDate) == 0
+                && PhoneNumber == other.PhoneNumber
+                && Email == other.Email
+                && GitHubLink == other.GitHubLink
+                && Notes == other.Notes);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id
+                ^ Name.GetHashCode()
+                ^ BirthDate.GetHashCode()
+                ^ PhoneNumber.GetHashCode()
+                ^ Email.GetHashCode()
+                ^ GitHubLink.GetHashCode()
+                ^ Notes.GetHashCode();
+        }
     }
 }

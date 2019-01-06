@@ -28,40 +28,83 @@ namespace Services
             return coursesList;
         }
 
-        public Course GetCourse(int id)
+        public virtual Course GetCourse(int id)
         {
+            if (academyRepository == null)
+            {
+                return null;
+            }
             Course course = academyRepository.GetCourse(id);
             return course;
         }
 
-        public void CreateCourse(Course course)
+        public virtual bool CreateCourse(Course course)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.CreateCourse(course);
+            return true;
         }
 
-        public void UpdateCourse(Course course)
+        public virtual bool UpdateCourse(Course course)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.UpdateCourse(course);
+            return true;
         }
 
-        public void DeleteCourse(Course course)
+        public virtual bool DeleteCourse(Course course)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.DeleteCourse(course);
+            return true;
         }
 
-        public void DeleteCourse(int id)
+        public virtual bool DeleteCourse(int id)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.DeleteCourse(id);
+            return true;
         }
 
-        public void AssignStudentsToCourse(int courseId, List<int> studentsIds)
+        public virtual bool AssignStudentsToCourse(int courseId, IEnumerable<int> studentsIds)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.AssignStudentsToCourse(courseId, studentsIds);
+            return true;
         }
 
-        public void AssignLecturersToCourse(int courseId, List<int> lecturersIds)
+        public virtual bool AssignLecturersToCourse(int courseId, List<int> lecturersIds)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.AssignLecturersToCourse(courseId, lecturersIds);
+            return true;
+        }
+
+        public virtual bool IsCourseExisted(Course course)
+        {
+            Course dbCourse = GetCourse(course.Id);
+            if (dbCourse == null)
+                return false;
+
+            return dbCourse.Equals(course);
         }
     }
 }

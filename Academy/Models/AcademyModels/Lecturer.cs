@@ -15,5 +15,23 @@ namespace Models.AcademyModels
         {
             Courses = new List<Course>();
         }
+
+        public override bool Equals(object obj)
+        {
+            Lecturer other = obj as Lecturer;
+            if (other == null)
+                return false;
+
+            return (Id == other.Id
+                && Name == other.Name
+                && DateTime.Compare(BirthDate, other.BirthDate) == 0);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id
+                ^ Name.GetHashCode()
+                ^ BirthDate.GetHashCode();
+        }
     }
 }

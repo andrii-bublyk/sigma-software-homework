@@ -92,6 +92,9 @@ namespace Academy.Controllers
         public IActionResult AssignStudents(int id)
         {
             Course course = courseService.GetCourse(id);
+            if (course == null)
+                return NotFound();
+
             List<Student> allStudents = studentService.GetAllStudents();
 
             CourseStudentsAssignmentViewModel model = new CourseStudentsAssignmentViewModel();
@@ -110,6 +113,16 @@ namespace Academy.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult AssignStudents(CourseStudentsAssignmentViewModel model)
         {
+            // todo check
+            //if (!courseService.IsCourseExisted(model.Course))
+            //    return NotFound();
+
+            //foreach(var studentAssignment in model.StudentsAssignmentsList)
+            //{
+            //    if (!studentService.IsStudentExisted(studentAssignment.Student))
+            //        return NotFound();
+            //}
+
             var assignedStudentsId = model.StudentsAssignmentsList.Where(al => al.IsAssigned).Select(s => s.Student.Id).ToList();
             courseService.AssignStudentsToCourse(model.Course.Id, assignedStudentsId);
 
@@ -121,6 +134,9 @@ namespace Academy.Controllers
         public IActionResult AssignLecturers(int id)
         {
             Course course = courseService.GetCourse(id);
+            if (course == null)
+                return NotFound();
+
             List<Lecturer> allLecturers = lecturerService.GetAllLecturers();
 
             CourseLecturersAssignmentViewModel model = new CourseLecturersAssignmentViewModel();
@@ -139,6 +155,16 @@ namespace Academy.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult AssignLecturers(CourseLecturersAssignmentViewModel model)
         {
+            // todo check
+            //if (!courseService.IsCourseExisted(model.Course))
+            //    return NotFound();
+
+            //foreach (var lecturerAssignment in model.LecturersAssignmentsList)
+            //{
+            //    if (!lecturerService.IsLecturerExisted(lecturerAssignment.Lecturer))
+            //        return NotFound();
+            //}
+
             var assignedLecturersId = model.LecturersAssignmentsList.Where(a => a.IsAssigned).Select(l => l.Lecturer.Id).ToList();
             courseService.AssignLecturersToCourse(model.Course.Id, assignedLecturersId);
             return RedirectToAction("Courses");
