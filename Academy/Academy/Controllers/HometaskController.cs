@@ -30,7 +30,7 @@ namespace Academy.Controllers
                 return NotFound();
             }
 
-            ViewData["courseId"] = course.Id.ToString();
+            ViewData["courseId"] = course.Id;
             ViewData["courseName"] = course.Name;
 
             //var hometasksIds = course.HomeTasks.Select(h => h.Id);
@@ -53,8 +53,11 @@ namespace Academy.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Create(int courseId)
         {
-            ViewData["courseId"] = courseId;
-            ViewData["courseName"] = courseService.GetCourse(courseId).Name;
+            Course course = courseService.GetCourse(courseId);
+            if (course == null)
+                return NotFound();
+            ViewData["courseId"] = course.Id;
+            ViewData["courseName"] = course.Name;
             return View();
         }
 
@@ -63,7 +66,6 @@ namespace Academy.Controllers
         public IActionResult Create(HomeTask homeTask)
         {
             hometaskService.CreateHomeTask(homeTask);
-
             return RedirectToAction("CourseHometasks", new { courseId = homeTask.CourseId });
         }
 
@@ -96,7 +98,7 @@ namespace Academy.Controllers
             {
                 return NotFound();
             }
-            hometaskService.DeleteHomeTask(homeTask);
+            hometaskService.DeleteHomeTask(id);
 
             return RedirectToAction("CourseHometasks", new { courseId = homeTask.CourseId });
         }

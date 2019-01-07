@@ -33,7 +33,7 @@ namespace Academy.Controllers
             ViewData["studentId"] = student.Id;
             ViewData["studentName"] = student.Name;
 
-            var studentAssessments = homeTaskAssessmentService.GetHomeTaskAssessmentsByStudentId(studentId);
+            List<HomeTaskAssessment> studentAssessments = homeTaskAssessmentService.GetHomeTaskAssessmentsByStudentId(studentId);
 
             return View(studentAssessments);
         }
@@ -43,6 +43,8 @@ namespace Academy.Controllers
         public IActionResult Edit(int id)
         {
             HomeTaskAssessment assessment = homeTaskAssessmentService.GetHomeTaskAssessment(id);
+            if (assessment == null)
+                return NotFound();
             return View(assessment);
         }
 

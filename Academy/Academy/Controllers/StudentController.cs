@@ -22,7 +22,8 @@ namespace Academy.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Students()
         {
-            return View(studentService.GetAllStudents());
+            var allStudents = studentService.GetAllStudents();
+            return View(allStudents);
         }
 
         [HttpGet]

@@ -10,47 +10,82 @@ namespace Services
     {
         private readonly AcademyRepository academyRepository;
 
+        public HomeTaskAssessmentService()
+        {
+        }
+
         public HomeTaskAssessmentService(AcademyRepository academyRepository)
         {
             this.academyRepository = academyRepository;
         }
 
-        public List<HomeTaskAssessment> GetAllHomeTasks()
+        public virtual List<HomeTaskAssessment> GetAllHomeTasks()
         {
+            if (academyRepository == null)
+            {
+                return new List<HomeTaskAssessment>();
+            }
             List<HomeTaskAssessment> homeTaskAssessmentList = academyRepository.GetAllHomeTaskAssessments();
             return homeTaskAssessmentList;
         }
 
-        public HomeTaskAssessment GetHomeTaskAssessment(int id)
+        public virtual HomeTaskAssessment GetHomeTaskAssessment(int id)
         {
+            if (academyRepository == null)
+            {
+                return null;
+            }
             HomeTaskAssessment homeTaskAssessment = academyRepository.GetHomeTaskAssessment(id);
             return homeTaskAssessment;
         }
 
-        public void CreateHomeTaskAssessment(HomeTaskAssessment homeTaskAssessment)
+        public virtual bool CreateHomeTaskAssessment(HomeTaskAssessment homeTaskAssessment)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.CreateHomeTaskAssessment(homeTaskAssessment);
+            return true;
         }
 
-        public void UpdateHomeTaskAssessment(HomeTaskAssessment homeTaskAssessment)
+        public virtual bool UpdateHomeTaskAssessment(HomeTaskAssessment homeTaskAssessment)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.UpdateHomeTaskAssessment(homeTaskAssessment);
+            return true;
         }
 
-        public void DeleteHomeTaskAssessment(HomeTaskAssessment homeTaskAssessment)
+        public virtual bool DeleteHomeTaskAssessment(HomeTaskAssessment homeTaskAssessment)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.DeleteHomeTaskAssessment(homeTaskAssessment);
+            return true;
         }
 
-        public void DeleteHomeTaskAssessment(int id)
+        public virtual bool DeleteHomeTaskAssessment(int id)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.DeleteHomeTaskAssessment(id);
+            return true;
         }
 
-        public List<HomeTaskAssessment> GetHomeTaskAssessmentsByStudentId(int studentId)
+        public virtual List<HomeTaskAssessment> GetHomeTaskAssessmentsByStudentId(int studentId)
         {
+            if (academyRepository == null)
+            {
+                return new List<HomeTaskAssessment>(); ;
+            }
             return academyRepository.GetHomeTaskAssessmentsByStudentId(studentId);
         }
-
     }
 }

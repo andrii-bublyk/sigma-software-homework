@@ -11,7 +11,7 @@ namespace DataAccess.EF
 {
     public class AcademyContext : DbContext
     {
-        //
+        #region forCreatingDb
         //public AcademyContext()
         //{
         //    Database.EnsureCreated();
@@ -21,7 +21,7 @@ namespace DataAccess.EF
         //{
         //    optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=AcademyDb;Trusted_Connection=True;");
         //}
-        //
+        #endregion
 
         private readonly IOptions<RepositoryOptions> options;
 
@@ -29,15 +29,15 @@ namespace DataAccess.EF
         {
             this.options = options;
         }
-
-        //
+        
+        #region normalWorkDb
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
             optionsBuilder.UseSqlServer(options.Value.DefaultConnectionString);
             //optionsBuilder.UseLazyLoadingProxies();
         }
-        //
+        #endregion
 
         public DbSet<User> User { get; set; }
         public DbSet<Role> Role { get; set; }

@@ -22,7 +22,8 @@ namespace Academy.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Lecturers()
         {
-            return View(lecturerService.GetAllLecturers());
+            var allLecturers = lecturerService.GetAllLecturers();
+            return View(allLecturers);
         }
 
         [HttpGet]

@@ -34,7 +34,6 @@ namespace Academy.Controllers
         {
             if (ModelState.IsValid)
             {
-
                 User user = accountService.GetUserByEmail(model.Email);
                 if (user == null)
                 {
