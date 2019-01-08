@@ -13,14 +13,12 @@ namespace Models.AcademyModels
         public string GitHubLink { get; set; }
         public string Notes { get; set; }
 
-        //public virtual List<StudentCourse> StudentCourses { get; set; }
-        public virtual List<Course> Courses { get; set; }
+        public virtual List<StudentCourse> StudentCourses { get; set; }
         public virtual List<HomeTaskAssessment> HomeTaskAssessments { get; set; }
 
         public Student()
         {
-            //StudentCourses = new List<StudentCourse>();
-            Courses = new List<Course>();
+            StudentCourses = new List<StudentCourse>();
             HomeTaskAssessments = new List<HomeTaskAssessment>();
         }
     }

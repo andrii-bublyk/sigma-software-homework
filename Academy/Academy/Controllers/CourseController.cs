@@ -69,23 +69,23 @@ namespace Academy.Controllers
             return RedirectToAction("Courses");
         }
 
-        [HttpGet]
-        public IActionResult AssignStudents(int id)
-        {
-            Course course = courseService.GetCourse(id);
-            List<Student> allStudents = studentService.GetAllStudents();
+        //[HttpGet]
+        //public IActionResult AssignStudents(int id)
+        //{
+        //    Course course = courseService.GetCourse(id);
+        //    List<Student> allStudents = studentService.GetAllStudents();
 
-            CourseStudentsAssignmentViewModel model = new CourseStudentsAssignmentViewModel();
-            model.Course = course;
-            model.StudentsAssignmentsList = new List<StudentAssignment>();
-            foreach (var student in allStudents)
-            {
-                bool isAssigned = course.Students.Any(c => c.Id == student.Id);
-                model.StudentsAssignmentsList.Add(new StudentAssignment() { Student = student, IsAssigned = isAssigned });
-            }
+        //    CourseStudentsAssignmentViewModel model = new CourseStudentsAssignmentViewModel();
+        //    model.Course = course;
+        //    model.StudentsAssignmentsList = new List<StudentAssignment>();
+        //    foreach (var student in allStudents)
+        //    {
+        //        bool isAssigned = course.Students.Any(c => c.Id == student.Id);
+        //        model.StudentsAssignmentsList.Add(new StudentAssignment() { Student = student, IsAssigned = isAssigned });
+        //    }
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
         [HttpPost]
         public IActionResult AssignStudents(CourseStudentsAssignmentViewModel model)
@@ -115,23 +115,23 @@ namespace Academy.Controllers
             return RedirectToAction("Courses");
         }
 
-        [HttpGet]
-        public IActionResult AssignLecturers(int id)
-        {
-            Course course = courseService.GetCourse(id);
-            List<Lecturer> allLecturers = lecturerService.GetAllLecturers();
+        //[HttpGet]
+        //public IActionResult AssignLecturers(int id)
+        //{
+        //    Course course = courseService.GetCourse(id);
+        //    List<Lecturer> allLecturers = lecturerService.GetAllLecturers();
 
-            CourseLecturersAssignmentViewModel model = new CourseLecturersAssignmentViewModel();
-            model.Course = course;
-            model.LecturersAssignmentsList = new List<LecturerAssignment>();
-            foreach (var lecturer in allLecturers)
-            {
-                bool isAssigned = course.Lecturers.Any(c => c.Id == lecturer.Id);
-                model.LecturersAssignmentsList.Add(new LecturerAssignment() { Lecturer = lecturer, IsAssigned = isAssigned });
-            }
+        //    CourseLecturersAssignmentViewModel model = new CourseLecturersAssignmentViewModel();
+        //    model.Course = course;
+        //    model.LecturersAssignmentsList = new List<LecturerAssignment>();
+        //    foreach (var lecturer in allLecturers)
+        //    {
+        //        bool isAssigned = course.Lecturers.Any(c => c.Id == lecturer.Id);
+        //        model.LecturersAssignmentsList.Add(new LecturerAssignment() { Lecturer = lecturer, IsAssigned = isAssigned });
+        //    }
 
-            return View(model);
-        }
+        //    return View(model);
+        //}
 
         [HttpPost]
         public IActionResult AssignLecturers(CourseLecturersAssignmentViewModel model)

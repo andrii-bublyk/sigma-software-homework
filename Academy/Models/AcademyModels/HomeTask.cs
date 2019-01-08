@@ -12,8 +12,8 @@ namespace Models.AcademyModels
         public int Number { get; set; }
 
         public int CourseId { get; set; }
-
         public Course Course { get; set; }
+
         public List<HomeTaskAssessment> HomeTaskAssessments { get; set; }
 
         public HomeTask()

@@ -9,11 +9,11 @@ namespace Models.AcademyModels
         public string Name { get; set; }
         public DateTime BirthDate { get; set; }
 
-        public List<Course> Courses { get; set; }
+        public List<LecturerCourse> LecturerCourses { get; set; }
 
         public Lecturer()
         {
-            Courses = new List<Course>();
+            LecturerCourses = new List<LecturerCourse>();
         }
     }
 }

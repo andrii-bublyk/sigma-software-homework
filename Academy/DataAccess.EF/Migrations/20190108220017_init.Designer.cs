@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.EF.Migrations
 {
     [DbContext(typeof(AcademyContext))]
-    [Migration("20181225214800_init")]
+    [Migration("20190108220017_init")]
     partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,6 +65,8 @@ namespace DataAccess.EF.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CourseId");
+
                     b.ToTable("HomeTask");
                 });
 
@@ -84,6 +86,10 @@ namespace DataAccess.EF.Migrations
                     b.Property<int>("StudentId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("HomeTaskId");
+
+                    b.HasIndex("StudentId");
 
                     b.ToTable("HomeTaskAssessment");
                 });
@@ -108,15 +114,13 @@ namespace DataAccess.EF.Migrations
 
             modelBuilder.Entity("Models.AcademyModels.LecturerCourse", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("LecturerId");
 
                     b.Property<int>("CourseId");
 
-                    b.Property<int>("LecturerId");
+                    b.HasKey("LecturerId", "CourseId");
 
-                    b.HasKey("Id");
+                    b.HasIndex("CourseId");
 
                     b.ToTable("LecturerCourse");
                 });
@@ -157,15 +161,13 @@ namespace DataAccess.EF.Migrations
 
             modelBuilder.Entity("Models.AcademyModels.StudentCourse", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("StudentId");
 
                     b.Property<int>("CourseId");
 
-                    b.Property<int>("StudentId");
+                    b.HasKey("StudentId", "CourseId");
 
-                    b.HasKey("Id");
+                    b.HasIndex("CourseId");
 
                     b.ToTable("StudentCourse");
                 });
@@ -209,6 +211,53 @@ namespace DataAccess.EF.Migrations
                     b.HasData(
                         new { Id = 1, Email = "admin@gmail.com", Password = "qwerty", RoleId = 1 }
                     );
+                });
+
+            modelBuilder.Entity("Models.AcademyModels.HomeTask", b =>
+                {
+                    b.HasOne("Models.AcademyModels.Course", "Course")
+                        .WithMany("HomeTasks")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Models.AcademyModels.HomeTaskAssessment", b =>
+                {
+                    b.HasOne("Models.AcademyModels.HomeTask")
+                        .WithMany("HomeTaskAssessments")
+                        .HasForeignKey("HomeTaskId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Models.AcademyModels.Student")
+                        .WithMany("HomeTaskAssessments")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Models.AcademyModels.LecturerCourse", b =>
+                {
+                    b.HasOne("Models.AcademyModels.Course", "Course")
+                        .WithMany("LecturerCourses")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Models.AcademyModels.Lecturer", "Lecturer")
+                        .WithMany("LecturerCourses")
+                        .HasForeignKey("LecturerId")
+                        .OnDelete(DeleteBehavior.Restrict);
+                });
+
+            modelBuilder.Entity("Models.AcademyModels.StudentCourse", b =>
+                {
+                    b.HasOne("Models.AcademyModels.Course", "Course")
+                        .WithMany("StudentCourses")
+                        .HasForeignKey("CourseId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Models.AcademyModels.Student", "Student")
+                        .WithMany("StudentCourses")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Models.AuthorizationModels.User", b =>
