@@ -13,12 +13,17 @@ namespace Models.AcademyModels
 
         public virtual List<LecturerCourse> LecturerCourses { get; set; }
         public virtual List<StudentCourse> StudentCourses { get; set; }
+
+        public virtual List<Student> Students { get; set; }
+        public virtual List<Lecturer> Lecturers { get; set; }
         public List<HomeTask> HomeTasks { get; set; }
 
         public Course()
         {
             LecturerCourses = new List<LecturerCourse>();
             StudentCourses = new List<StudentCourse>();
+            Students = new List<Student>();
+            Lecturers = new List<Lecturer>();
             HomeTasks = new List<HomeTask>();
         }
     }

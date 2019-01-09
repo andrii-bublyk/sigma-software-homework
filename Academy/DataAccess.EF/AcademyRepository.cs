@@ -32,29 +32,29 @@ namespace DataAccess.EF
             {
                 Course course = academyDb.Course.FirstOrDefault(c => c.Id == id);
 
-                //var studentsIds = academyDb.StudentCourse.Where(sc => sc.CourseId == course.Id).Select(sc => sc.StudentId);
-                //List<Student> courseStudents = new List<Student>();
-                //foreach (var studentId in studentsIds)
-                //{
-                //    Student student = academyDb.Student.FirstOrDefault(s => s.Id == studentId);
-                //    if (student != null)
-                //    {
-                //        courseStudents.Add(student);
-                //    }
-                //}
-                //course.Students = courseStudents;
+                var studentsIds = academyDb.StudentCourse.Where(sc => sc.CourseId == course.Id).Select(sc => sc.StudentId);
+                List<Student> courseStudents = new List<Student>();
+                foreach (var studentId in studentsIds)
+                {
+                    Student student = academyDb.Student.FirstOrDefault(s => s.Id == studentId);
+                    if (student != null)
+                    {
+                        courseStudents.Add(student);
+                    }
+                }
+                course.Students = courseStudents;
 
-                //var lecturersIds = academyDb.LecturerCourse.Where(lc => lc.CourseId == course.Id).Select(lc => lc.LecturerId);
-                //List<Lecturer> courseLectors = new List<Lecturer>();
-                //foreach (var lecturerId in lecturersIds)
-                //{
-                //    Lecturer lecturer = academyDb.Lecturer.FirstOrDefault(l => l.Id == lecturerId);
-                //    if (lecturer != null)
-                //    {
-                //        courseLectors.Add(lecturer);
-                //    }
-                //}
-                //course.Lecturers = courseLectors;
+                var lecturersIds = academyDb.LecturerCourse.Where(lc => lc.CourseId == course.Id).Select(lc => lc.LecturerId);
+                List<Lecturer> courseLectors = new List<Lecturer>();
+                foreach (var lecturerId in lecturersIds)
+                {
+                    Lecturer lecturer = academyDb.Lecturer.FirstOrDefault(l => l.Id == lecturerId);
+                    if (lecturer != null)
+                    {
+                        courseLectors.Add(lecturer);
+                    }
+                }
+                course.Lecturers = courseLectors;
 
                 return course;
             }
@@ -97,6 +97,17 @@ namespace DataAccess.EF
                 academyDb.SaveChanges();
             }
         }
+
+        //public void GetCourseStudents(int id)
+        //{
+        //    using (AcademyContext academyDb = new AcademyContext(options))
+        //    {
+        //        Course course = academyDb.Course.FirstOrDefault(c => c.Id == id);
+        //        List<int> students = academyDb.StudentCourse.Where(sc => sc.CourseId == id).Select(sc => sc.StudentId).ToList();
+
+        //        return course;
+        //    }
+        //}
 
         public void AssignStudentsToCourse(int courseId, List<int> studentsIds)
         {

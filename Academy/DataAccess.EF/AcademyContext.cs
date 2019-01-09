@@ -92,9 +92,9 @@ namespace DataAccess.EF
             builder.Property(c => c.StartDate).IsRequired().HasColumnType("date");
             builder.Property(c => c.EndDate).IsRequired().HasColumnType("date");
 
-            //builder.Ignore(c => c.Lecturers);
-            //builder.Ignore(c => c.Students);
-            //builder.Ignore(c => c.HomeTasks);
+            builder.Ignore(c => c.Lecturers);
+            builder.Ignore(c => c.Students);
+            builder.Ignore(c => c.HomeTasks);
         }
     }
 
@@ -105,7 +105,7 @@ namespace DataAccess.EF
             builder.Property(l => l.Name).IsRequired().HasMaxLength(50);
             builder.Property(l => l.BirthDate).IsRequired().HasColumnType("date");
 
-            //builder.Ignore(c => c.Courses);
+            builder.Ignore(c => c.Courses);
         }
     }
 
@@ -120,8 +120,8 @@ namespace DataAccess.EF
             builder.Property(s => s.GitHubLink).IsRequired().HasMaxLength(256);
             builder.Property(s => s.Notes).IsRequired().HasColumnType("text");
 
-            //builder.Ignore(c => c.Courses);
-            //builder.Ignore(c => c.HomeTaskAssessments);
+            builder.Ignore(c => c.Courses);
+            builder.Ignore(c => c.HomeTaskAssessments);
         }
     }
 
