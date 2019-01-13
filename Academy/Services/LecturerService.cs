@@ -8,13 +8,13 @@ namespace Services
 {
     public class LecturerService
     {
-        private readonly AcademyRepository academyRepository;
+        private readonly IAcademyRepository academyRepository;
 
         public LecturerService()
         {
         }
 
-        public LecturerService(AcademyRepository academyRepository)
+        public LecturerService(IAcademyRepository academyRepository)
         {
             this.academyRepository = academyRepository;
         }

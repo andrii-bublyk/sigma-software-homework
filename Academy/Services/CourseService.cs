@@ -7,13 +7,13 @@ namespace Services
 {
     public class CourseService
     {
-        private readonly AcademyRepository academyRepository;
+        private readonly IAcademyRepository academyRepository;
 
         public CourseService()
         {
         }
 
-        public CourseService(AcademyRepository academyRepository)
+        public CourseService(IAcademyRepository academyRepository)
         {
             this.academyRepository = academyRepository;
         }

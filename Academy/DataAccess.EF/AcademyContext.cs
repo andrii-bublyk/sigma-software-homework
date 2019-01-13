@@ -25,18 +25,23 @@ namespace DataAccess.EF
 
         private readonly IOptions<RepositoryOptions> options;
 
+        // only for unit tests!!!
+        public AcademyContext(DbContextOptions<AcademyContext> options) : base(options)
+        {
+        }
+
         public AcademyContext(IOptions<RepositoryOptions> options)
         {
             this.options = options;
         }
-        
+
         #region normalWorkDb
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer(options.Value.DefaultConnectionString);
-            //optionsBuilder.UseLazyLoadingProxies();
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    base.OnConfiguring(optionsBuilder);
+        //    optionsBuilder.UseSqlServer(options.Value.DefaultConnectionString);
+        //    //optionsBuilder.UseLazyLoadingProxies();
+        //}
         #endregion
 
         public DbSet<User> User { get; set; }

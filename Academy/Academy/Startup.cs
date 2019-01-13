@@ -28,8 +28,8 @@ namespace Academy
             services.AddMvc();
 
             services.Configure<RepositoryOptions>(Configuration);
-            //services.AddScoped<AcademyContext, AcademyContext>();
-            services.AddScoped<AcademyRepository, AcademyRepository>();
+            services.AddScoped<AcademyContext, AcademyContext>();
+            services.AddScoped<IAcademyRepository, AcademyRepository2>();
 
             services.AddScoped<AccountService, AccountService>();
             services.AddScoped<CourseService, CourseService>();
@@ -44,6 +44,13 @@ namespace Academy
                     options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                     options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
                 });
+
+            // only for unit tests!!!
+            services.AddDbContext<AcademyContext>(options =>
+            {
+                options.UseSqlServer(Configuration.GetValue<string>("DefaultConnectionString").ToString());
+                options.UseLazyLoadingProxies();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

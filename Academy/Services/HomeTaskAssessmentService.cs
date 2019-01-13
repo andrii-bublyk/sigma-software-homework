@@ -8,13 +8,13 @@ namespace Services
 {
     public class HomeTaskAssessmentService
     {
-        private readonly AcademyRepository academyRepository;
+        private readonly IAcademyRepository academyRepository;
 
         public HomeTaskAssessmentService()
         {
         }
 
-        public HomeTaskAssessmentService(AcademyRepository academyRepository)
+        public HomeTaskAssessmentService(IAcademyRepository academyRepository)
         {
             this.academyRepository = academyRepository;
         }
