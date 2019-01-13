@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Academy.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.AcademyModels;
 using Services;
@@ -35,12 +36,14 @@ namespace Academy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult Create(Course newCourse)
         {
             courseService.CreateCourse(newCourse);
@@ -48,6 +51,18 @@ namespace Academy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
+        public IActionResult Info(int id)
+        {
+            Course course = courseService.GetCourse(id);
+            if (course == null)
+                return NotFound();
+
+            return View(course);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Edit(int id)
         {
             Course course = courseService.GetCourse(id);
@@ -57,6 +72,7 @@ namespace Academy.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult Edit(Course course)
         {
             courseService.UpdateCourse(course);
@@ -64,6 +80,7 @@ namespace Academy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Delete(int id)
         {
             courseService.DeleteCourse(id);
@@ -71,9 +88,13 @@ namespace Academy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult AssignStudents(int id)
         {
             Course course = courseService.GetCourse(id);
+            if (course == null)
+                return NotFound();
+
             List<Student> allStudents = studentService.GetAllStudents();
 
             CourseStudentsAssignmentViewModel model = new CourseStudentsAssignmentViewModel();
@@ -89,37 +110,33 @@ namespace Academy.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult AssignStudents(CourseStudentsAssignmentViewModel model)
         {
+            // todo check
+            //if (!courseService.IsCourseExisted(model.Course))
+            //    return NotFound();
+
+            //foreach(var studentAssignment in model.StudentsAssignmentsList)
+            //{
+            //    if (!studentService.IsStudentExisted(studentAssignment.Student))
+            //        return NotFound();
+            //}
+
             var assignedStudentsId = model.StudentsAssignmentsList.Where(al => al.IsAssigned).Select(s => s.Student.Id).ToList();
             courseService.AssignStudentsToCourse(model.Course.Id, assignedStudentsId);
-
-            // auto creating marks
-            var courseHometasksIds = hometaskService.GetAllHomeTasks().Where(h => h.CourseId == model.Course.Id).Select(h => h.Id);
-            foreach (var studentId in assignedStudentsId)
-            {
-                var studentHometaskIds = studentService.GetStudent(studentId).HomeTaskAssessments.Select(a => a.HomeTaskId);
-                var missingHometasksId = courseHometasksIds.Except(studentHometaskIds);
-                foreach (var hometaskId in missingHometasksId)
-                {
-                    HomeTaskAssessment assessment = new HomeTaskAssessment()
-                    {
-                        IsComplete = false,
-                        Date = DateTime.Now,
-                        HomeTaskId = hometaskId,
-                        StudentId = studentId
-                    };
-                    homeTaskAssessmentService.CreateHomeTaskAssessment(assessment);
-                }
-            }
 
             return RedirectToAction("Courses");
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult AssignLecturers(int id)
         {
             Course course = courseService.GetCourse(id);
+            if (course == null)
+                return NotFound();
+
             List<Lecturer> allLecturers = lecturerService.GetAllLecturers();
 
             CourseLecturersAssignmentViewModel model = new CourseLecturersAssignmentViewModel();
@@ -135,8 +152,19 @@ namespace Academy.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult AssignLecturers(CourseLecturersAssignmentViewModel model)
         {
+            // todo check
+            //if (!courseService.IsCourseExisted(model.Course))
+            //    return NotFound();
+
+            //foreach (var lecturerAssignment in model.LecturersAssignmentsList)
+            //{
+            //    if (!lecturerService.IsLecturerExisted(lecturerAssignment.Lecturer))
+            //        return NotFound();
+            //}
+
             var assignedLecturersId = model.LecturersAssignmentsList.Where(a => a.IsAssigned).Select(l => l.Lecturer.Id).ToList();
             courseService.AssignLecturersToCourse(model.Course.Id, assignedLecturersId);
             return RedirectToAction("Courses");

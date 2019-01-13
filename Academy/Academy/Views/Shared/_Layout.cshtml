@@ -9,10 +9,12 @@
 <body>
     <div>@{await Html.RenderPartialAsync("_HeaderPartial");}</div>
 
-    <div>
+    <div class="site-body">
         @RenderBody()
     </div>
 
-    <div>@{await Html.RenderPartialAsync("_FooterPartial");}</div>
+    <div>
+        @{await Html.RenderPartialAsync("_FooterPartial");}
+    </div>
 </body>
 </html>

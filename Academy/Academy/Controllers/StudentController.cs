@@ -22,16 +22,19 @@ namespace Academy.Controllers
         [Authorize(Roles = "admin")]
         public IActionResult Students()
         {
-            return View(studentService.GetAllStudents());
+            var allStudents = studentService.GetAllStudents();
+            return View(allStudents);
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult Create(Student newStudent)
         {
             studentService.CreateStudent(newStudent);
@@ -39,6 +42,18 @@ namespace Academy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
+        public IActionResult Info(int id)
+        {
+            Student student = studentService.GetStudent(id);
+            if (student == null)
+                return NotFound();
+
+            return View(student);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Edit(int id)
         {
             Student student = studentService.GetStudent(id);
@@ -48,6 +63,7 @@ namespace Academy.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult Edit(Student student)
         {
             studentService.UpdateStudent(student);
@@ -55,6 +71,7 @@ namespace Academy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Delete(int id)
         {
             studentService.DeleteStudent(id);

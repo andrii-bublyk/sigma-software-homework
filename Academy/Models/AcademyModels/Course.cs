@@ -26,5 +26,27 @@ namespace Models.AcademyModels
             Lecturers = new List<Lecturer>();
             HomeTasks = new List<HomeTask>();
         }
+
+        public override bool Equals(object obj)
+        {
+            Course other = obj as Course;
+            if (other == null)
+                return false;
+
+            return (Id == other.Id
+                && Name == other.Name
+                && DateTime.Compare(StartDate, other.StartDate) == 0
+                && DateTime.Compare(EndDate, other.EndDate) == 0
+                && PassCredits == other.PassCredits);
+        }
+
+        public override int GetHashCode()
+        {
+            return Id
+                ^ Name.GetHashCode()
+                ^ StartDate.GetHashCode()
+                ^ EndDate.GetHashCode()
+                ^ PassCredits;
+        }
     }
 }

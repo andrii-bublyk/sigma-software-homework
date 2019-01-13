@@ -10,41 +10,73 @@ namespace Services
     {
         private readonly AcademyRepository academyRepository;
 
+        public HometaskService()
+        {
+        }
+
         public HometaskService(AcademyRepository academyRepository)
         {
             this.academyRepository = academyRepository;
         }
 
-        public List<HomeTask> GetAllHomeTasks()
+        public virtual List<HomeTask> GetAllHomeTasks()
         {
+            if (academyRepository == null)
+            {
+                return new List<HomeTask>();
+            }
             List<HomeTask> homeTaskList = academyRepository.GetAllHomeTasks();
             return homeTaskList;
         }
 
-        public HomeTask GetHomeTask(int id)
+        public virtual HomeTask GetHomeTask(int id)
         {
+            if (academyRepository == null)
+            {
+                return null;
+            }
             HomeTask homeTask = academyRepository.GetHomeTask(id);
             return homeTask;
         }
 
-        public void CreateHomeTask(HomeTask homeTask)
+        public virtual bool CreateHomeTask(HomeTask homeTask)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.CreateHomeTask(homeTask);
+            return true;
         }
 
-        public void UpdateHomeTask(HomeTask homeTask)
+        public virtual bool UpdateHomeTask(HomeTask homeTask)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.UpdateHomeTask(homeTask);
+            return true;
         }
 
-        public void DeleteHomeTask(HomeTask homeTask)
+        public virtual bool DeleteHomeTask(HomeTask homeTask)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.DeleteHomeTask(homeTask);
+            return true;
         }
 
-        public void DeleteHomeTask(int id)
+        public virtual bool DeleteHomeTask(int id)
         {
+            if (academyRepository == null)
+            {
+                return false;
+            }
             academyRepository.DeleteHomeTask(id);
+            return true;
         }
     }
 }

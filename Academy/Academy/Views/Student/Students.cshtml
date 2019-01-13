@@ -57,6 +57,7 @@
                     @student.Notes
                 </td>
                 <td>
+                    @Html.ActionLink("Info", "Info", new { id = student.Id }) |
                     @Html.RouteLink("Assessment", new { controller = "HomeTaskAssessment", action = "StudentAssessments", studentId = student.Id }) |
                     @Html.ActionLink("Edit", "Edit", new { id = student.Id }) |
                     @Html.ActionLink("Delete", "Delete", new { id = student.Id })

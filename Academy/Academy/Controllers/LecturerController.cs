@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.AcademyModels;
 using Services;
@@ -18,18 +19,22 @@ namespace Academy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Lecturers()
         {
-            return View(lecturerService.GetAllLecturers());
+            var allLecturers = lecturerService.GetAllLecturers();
+            return View(allLecturers);
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult Create(Lecturer newLecturer)
         {
             lecturerService.CreateLecturer(newLecturer);
@@ -37,6 +42,7 @@ namespace Academy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Edit(int id)
         {
             Lecturer lecturer = lecturerService.GetLecturer(id);
@@ -46,6 +52,7 @@ namespace Academy.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public IActionResult Edit(Lecturer lecturer)
         {
             lecturerService.UpdateLecturer(lecturer);
@@ -53,6 +60,7 @@ namespace Academy.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public IActionResult Delete(int id)
         {
             lecturerService.DeleteLecturer(id);
